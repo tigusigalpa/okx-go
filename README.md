@@ -7,6 +7,8 @@
 
 Go client for the [OKX v5 API](https://www.okx.com/docs-v5/en/). Covers 335 REST endpoints and 53 WebSocket channels.
 
+**Package:** [pkg.go.dev/github.com/tigusigalpa/okx-go](https://pkg.go.dev/github.com/tigusigalpa/okx-go)
+
 > 📖 **[Full documentation available on Wiki](https://github.com/tigusigalpa/okx-go/wiki)**
 
 ## Install
