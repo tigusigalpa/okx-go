@@ -1,5 +1,7 @@
 # okx-go
 
+![OKX Golang client](https://github.com/user-attachments/assets/aa6baa0a-566e-4ac3-b1df-a495edaf1328)
+
 [![Go Version](https://img.shields.io/badge/go-1.21+-blue.svg)](https://golang.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
@@ -134,44 +136,51 @@ for msg := range ch {
 
 ## Options
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `WithHTTPClient(c)` | Custom `*http.Client` | `&http.Client{Timeout: 30s}` |
-| `WithBaseURL(url)` | Override base URL | `https://www.okx.com` |
-| `WithDemoTrading()` | Demo mode | off |
-| `WithTimeout(d)` | Request timeout | `30s` |
-| `WithRateLimiter(true)` | Rate limiter | off |
-| `WithLogger(l)` | Custom `Logger` | no-op |
+| Option                  | Description           | Default                      |
+|-------------------------|-----------------------|------------------------------|
+| `WithHTTPClient(c)`     | Custom `*http.Client` | `&http.Client{Timeout: 30s}` |
+| `WithBaseURL(url)`      | Override base URL     | `https://www.okx.com`        |
+| `WithDemoTrading()`     | Demo mode             | off                          |
+| `WithTimeout(d)`        | Request timeout       | `30s`                        |
+| `WithRateLimiter(true)` | Rate limiter          | off                          |
+| `WithLogger(l)`         | Custom `Logger`       | no-op                        |
 
 ## REST endpoints
 
-| Category | Count | Docs |
-|----------|-------|------|
-| Account | 53 | [link](https://www.okx.com/docs-v5/en/#trading-account-rest-api) |
-| Trade | 32 | [link](https://www.okx.com/docs-v5/en/#order-book-trading-trade-rest-api) |
-| Market Data | 24 | [link](https://www.okx.com/docs-v5/en/#order-book-trading-market-data-rest-api) |
-| Public Data | 24 | [link](https://www.okx.com/docs-v5/en/#public-data-rest-api) |
-| Asset | 26 | [link](https://www.okx.com/docs-v5/en/#funding-account-rest-api) |
-| Sub-account | 8 | [link](https://www.okx.com/docs-v5/en/#sub-account-rest-api) |
-| Trading Bot | 44 | [link](https://www.okx.com/docs-v5/en/#trading-bot-grid-trading-rest-api) |
-| Copy Trading | 26 | [link](https://www.okx.com/docs-v5/en/#copy-trading-rest-api) |
-| Block Trading | 20 | [link](https://www.okx.com/docs-v5/en/#block-trading-rest-api) |
-| Spread Trading | 13 | [link](https://www.okx.com/docs-v5/en/#spread-trading-rest-api) |
-| Financial Products | 33 | [link](https://www.okx.com/docs-v5/en/#financial-product-rest-api) |
-| Fiat | 13 | [link](https://www.okx.com/docs-v5/en/#fiat-rest-api) |
-| Trading Statistics | 15 | [link](https://www.okx.com/docs-v5/en/#trading-statistics-rest-api) |
-| System | 1 | [link](https://www.okx.com/docs-v5/en/#status-rest-api) |
-| Announcement | 2 | [link](https://www.okx.com/docs-v5/en/#announcement-rest-api) |
-| Affiliate | 1 | [link](https://www.okx.com/docs-v5/en/#affiliate-rest-api) |
-| **Total** | **335** | |
+| Category           | Count   | Docs                                                                            |
+|--------------------|---------|---------------------------------------------------------------------------------|
+| Account            | 53      | [link](https://www.okx.com/docs-v5/en/#trading-account-rest-api)                |
+| Trade              | 32      | [link](https://www.okx.com/docs-v5/en/#order-book-trading-trade-rest-api)       |
+| Market Data        | 24      | [link](https://www.okx.com/docs-v5/en/#order-book-trading-market-data-rest-api) |
+| Public Data        | 24      | [link](https://www.okx.com/docs-v5/en/#public-data-rest-api)                    |
+| Asset              | 26      | [link](https://www.okx.com/docs-v5/en/#funding-account-rest-api)                |
+| Sub-account        | 8       | [link](https://www.okx.com/docs-v5/en/#sub-account-rest-api)                    |
+| Trading Bot        | 44      | [link](https://www.okx.com/docs-v5/en/#trading-bot-grid-trading-rest-api)       |
+| Copy Trading       | 26      | [link](https://www.okx.com/docs-v5/en/#copy-trading-rest-api)                   |
+| Block Trading      | 20      | [link](https://www.okx.com/docs-v5/en/#block-trading-rest-api)                  |
+| Spread Trading     | 13      | [link](https://www.okx.com/docs-v5/en/#spread-trading-rest-api)                 |
+| Financial Products | 33      | [link](https://www.okx.com/docs-v5/en/#financial-product-rest-api)              |
+| Fiat               | 13      | [link](https://www.okx.com/docs-v5/en/#fiat-rest-api)                           |
+| Trading Statistics | 15      | [link](https://www.okx.com/docs-v5/en/#trading-statistics-rest-api)             |
+| System             | 1       | [link](https://www.okx.com/docs-v5/en/#status-rest-api)                         |
+| Announcement       | 2       | [link](https://www.okx.com/docs-v5/en/#announcement-rest-api)                   |
+| Affiliate          | 1       | [link](https://www.okx.com/docs-v5/en/#affiliate-rest-api)                      |
+| **Total**          | **335** |                                                                                 |
 
 ## WebSocket channels
 
 **Public (31):**
-`tickers`, `candle1D`, `candle1H`, `candle30m`, `trades`, `books`, `books5`, `bbo-tbt`, `opt-summary`, `estimated-price`, `mark-price`, `mark-price-candle1D`, `price-limit`, `open-interest`, `funding-rate`, `index-candle30m`, `index-tickers`, `status`, `public-struc-block-trades`, `block-tickers`, `block-trades`, `liquidation-orders`, `sprd-tickers`, `sprd-books5`, `sprd-books-l2-tbt`, `sprd-public-trades`, `sprd-candle1D`, `economic-calendar`, `call-auction-details`, `instruments`, `trades-all`
+`tickers`, `candle1D`, `candle1H`, `candle30m`, `trades`, `books`, `books5`, `bbo-tbt`, `opt-summary`,
+`estimated-price`, `mark-price`, `mark-price-candle1D`, `price-limit`, `open-interest`, `funding-rate`,
+`index-candle30m`, `index-tickers`, `status`, `public-struc-block-trades`, `block-tickers`, `block-trades`,
+`liquidation-orders`, `sprd-tickers`, `sprd-books5`, `sprd-books-l2-tbt`, `sprd-public-trades`, `sprd-candle1D`,
+`economic-calendar`, `call-auction-details`, `instruments`, `trades-all`
 
 **Private (22):**
-`account`, `positions`, `balance_and_position`, `orders`, `orders-algo`, `algo-advance`, `liquidation-warning`, `account-greeks`, `rfqs`, `quotes`, `sprd-orders`, `sprd-trades`, `adl-warning`, `fills`, `deposit-info`, `withdrawal-info`, `grid-orders-spot`, `grid-orders-contract`, `grid-positions`, `grid-sub-orders`, `algo-recurring-buy`, `copytrading-lead-notification`
+`account`, `positions`, `balance_and_position`, `orders`, `orders-algo`, `algo-advance`, `liquidation-warning`,
+`account-greeks`, `rfqs`, `quotes`, `sprd-orders`, `sprd-trades`, `adl-warning`, `fills`, `deposit-info`,
+`withdrawal-info`, `grid-orders-spot`, `grid-orders-contract`, `grid-positions`, `grid-sub-orders`,
+`algo-recurring-buy`, `copytrading-lead-notification`
 
 ## Demo trading
 
@@ -182,6 +191,7 @@ client := okx.NewRestClient(apiKey, secret, passphrase, okx.WithDemoTrading())
 ```
 
 WebSocket — use demo URLs:
+
 - `okx.WSDemoPublicURL`
 - `okx.WSDemoPrivateURL`
 - `okx.WSDemoBusinessURL`
