@@ -1,6 +1,6 @@
 # okx-go
 
-![OKX Golang client](https://github.com/user-attachments/assets/aa6baa0a-566e-4ac3-b1df-a495edaf1328)
+![OKX Golang client](https://i.postimg.cc/Rh3kyD66/561657912-aa6baa0a-566e-4ac3-b1df-a495edaf1328.jpg)
 
 [![Go Version](https://img.shields.io/badge/go-1.21+-blue.svg)](https://golang.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -262,4 +262,4 @@ Igor Sazonov — [@tigusigalpa](https://github.com/tigusigalpa) — sovletig@gma
 - [OKX API docs](https://www.okx.com/docs-v5/en/)
 - [Issues](https://github.com/tigusigalpa/okx-go/issues)
 
-Not affiliated with OKX. Test on demo before going live.
+Not affiliated with OKX. Test on demo before going live. Golang library.
