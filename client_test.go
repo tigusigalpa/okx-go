@@ -1,10 +1,15 @@
 package okx
 
 import (
+	"context"
+	"errors"
+	"net/http"
+	"net/http/httptest"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSign(t *testing.T) {
@@ -81,4 +86,33 @@ func TestOKXError(t *testing.T) {
 
 	assert.Contains(t, err.Error(), "50000")
 	assert.Contains(t, err.Error(), "Body cannot be empty")
+}
+
+// TestDo_PreservesDetailedOKXError verifies that when the OKX API returns a
+// non-zero envelope code that maps to a sentinel error (e.g. code="1" ->
+// ErrInternalServer), the underlying *OKXError (including the raw body with
+// data[].sCode / data[].sMsg) is preserved in the error chain and can be
+// retrieved via errors.As, while errors.Is still matches the sentinel.
+func TestDo_PreservesDetailedOKXError(t *testing.T) {
+	const rawBody = `{"code":"1","msg":"All operations failed","data":[{"sCode":"51008","sMsg":"Order failed. Insufficient balance"}]}`
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(rawBody))
+	}))
+	defer server.Close()
+
+	client := NewClient("api-key", "secret-key", "passphrase", WithBaseURL(server.URL))
+
+	err := client.do(context.Background(), http.MethodGet, "/api/v5/trade/order", nil, nil, nil)
+	require.Error(t, err)
+
+	assert.True(t, errors.Is(err, ErrInternalServer))
+
+	var apiErr *OKXError
+	require.True(t, errors.As(err, &apiErr))
+	assert.Equal(t, "1", apiErr.Code)
+	assert.Equal(t, "All operations failed", apiErr.Message)
+	assert.Contains(t, string(apiErr.Raw), "51008")
+	assert.Contains(t, string(apiErr.Raw), "Order failed. Insufficient balance")
 }

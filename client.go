@@ -153,7 +153,7 @@ func (c *Client) do(ctx context.Context, method, path string, params map[string]
 			Raw:     respBody,
 		}
 		if sentinelErr := MapErrorCode(envelope.Code); sentinelErr != nil {
-			return fmt.Errorf("%w: %s", sentinelErr, okxErr.Error())
+			return fmt.Errorf("%w: %w", sentinelErr, okxErr)
 		}
 		return okxErr
 	}
@@ -221,7 +221,7 @@ func (c *Client) doPublic(ctx context.Context, method, path string, params map[s
 			Raw:     respBody,
 		}
 		if sentinelErr := MapErrorCode(envelope.Code); sentinelErr != nil {
-			return fmt.Errorf("%w: %s", sentinelErr, okxErr.Error())
+			return fmt.Errorf("%w: %w", sentinelErr, okxErr)
 		}
 		return okxErr
 	}
