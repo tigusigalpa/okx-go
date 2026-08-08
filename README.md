@@ -138,6 +138,51 @@ for msg := range ch {
 }
 ```
 
+## Attached TP/SL (attachAlgoOrds)
+
+OKX rejects the legacy inline `tpTriggerPx`/`slTriggerPx` fields on `POST /api/v5/trade/order`
+for some instruments/scenarios with `sCode=54070` ("use the attachAlgoOrds array to place
+orders via Open API"). Use `models.PlaceOrderRequest.AttachAlgoOrds` — the current Open API
+mechanism for attaching TP/SL to the main order (as opposed to a separate, unlinked algo order
+via `PlaceAlgoOrder`):
+
+```go
+tpTriggerPx := "64000"
+tpOrdPx := "-1" // "-1" = execute TP as a market order once triggered
+slTriggerPx := "66000"
+slOrdPx := "-1" // "-1" = execute SL as a market order once triggered
+triggerPxType := "last" // "last", "index", or "mark"
+
+order := models.PlaceOrderRequest{
+    InstID:  "BTC-USDT-SWAP",
+    TdMode:  "isolated",
+    Side:    "sell",
+    OrdType: "market",
+    Sz:      "1",
+    PosSide: strPtr("short"),
+    AttachAlgoOrds: []models.AttachAlgoOrderRequest{
+        {
+            TpTriggerPx:     &tpTriggerPx,
+            TpOrdPx:         &tpOrdPx,
+            TpTriggerPxType: &triggerPxType,
+            SlTriggerPx:     &slTriggerPx,
+            SlOrdPx:         &slOrdPx,
+            SlTriggerPxType: &triggerPxType,
+        },
+    },
+}
+
+result, err := client.Trade.PlaceOrder(ctx, order)
+```
+
+Notes:
+
+- `AttachAlgoOrderRequest` is a request-only DTO (all fields are pointers, so unset fields are
+  omitted from the JSON payload). It is distinct from `models.AttachAlgoOrder`, which is the
+  response shape returned inside `Order.AttachAlgoOrds` and has non-optional string fields.
+- Legacy inline `TpTriggerPx`/`TpOrdPx`/`SlTriggerPx`/`SlOrdPx` fields on `PlaceOrderRequest`
+  are kept for backward compatibility, but prefer `AttachAlgoOrds` going forward.
+
 ## Options
 
 | Option                  | Description           | Default                      |
