@@ -33,9 +33,9 @@ func main() {
 				fmt.Printf("Total Equity: %s\n", *balance.TotalEq)
 			}
 			for _, detail := range balance.Details {
-				fmt.Printf("  %s: %s (Available: %s)\n", 
-					detail.Ccy, 
-					*detail.Eq, 
+				fmt.Printf("  %s: %s (Available: %s)\n",
+					detail.Ccy,
+					*detail.Eq,
 					*detail.AvailBal)
 			}
 		}

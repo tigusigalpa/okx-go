@@ -6,13 +6,13 @@ type WSRequest struct {
 }
 
 type WSResponse struct {
-	Event   string                   `json:"event,omitempty"`
-	Code    string                   `json:"code,omitempty"`
-	Msg     string                   `json:"msg,omitempty"`
-	ConnID  string                   `json:"connId,omitempty"`
-	Op      string                   `json:"op,omitempty"`
-	Data    []map[string]interface{} `json:"data,omitempty"`
-	Arg     map[string]interface{}   `json:"arg,omitempty"`
+	Event  string                   `json:"event,omitempty"`
+	Code   string                   `json:"code,omitempty"`
+	Msg    string                   `json:"msg,omitempty"`
+	ConnID string                   `json:"connId,omitempty"`
+	Op     string                   `json:"op,omitempty"`
+	Data   []map[string]interface{} `json:"data,omitempty"`
+	Arg    map[string]interface{}   `json:"arg,omitempty"`
 }
 
 type WSLoginRequest struct {

@@ -1,25 +1,25 @@
 package models
 
 type SubAccount struct {
-	Enable    bool   `json:"enable"`
-	SubAcct   string `json:"subAcct"`
-	Label     string `json:"label"`
-	Mobile    string `json:"mobile"`
-	GAuth     bool   `json:"gAuth"`
-	CanTransOut bool `json:"canTransOut"`
-	TS        string `json:"ts"`
+	Enable      bool   `json:"enable"`
+	SubAcct     string `json:"subAcct"`
+	Label       string `json:"label"`
+	Mobile      string `json:"mobile"`
+	GAuth       bool   `json:"gAuth"`
+	CanTransOut bool   `json:"canTransOut"`
+	TS          string `json:"ts"`
 }
 
 type SubAccountAPIKey struct {
-	Label      string `json:"label"`
-	APIKey     string `json:"apiKey"`
-	Perm       string `json:"perm"`
-	IP         string `json:"ip"`
-	TS         string `json:"ts"`
+	Label  string `json:"label"`
+	APIKey string `json:"apiKey"`
+	Perm   string `json:"perm"`
+	IP     string `json:"ip"`
+	TS     string `json:"ts"`
 }
 
 type CreateSubAccountRequest struct {
-	SubAcct string `json:"subAcct"`
+	SubAcct string  `json:"subAcct"`
 	Label   *string `json:"label,omitempty"`
 }
 
@@ -38,20 +38,20 @@ type CreateSubAccountAPIKeyRequest struct {
 }
 
 type CreateSubAccountAPIKeyResponse struct {
-	SubAcct    string `json:"subAcct"`
-	Label      string `json:"label"`
-	APIKey     string `json:"apiKey"`
-	Perm       string `json:"perm"`
-	IP         string `json:"ip"`
-	TS         string `json:"ts"`
+	SubAcct string `json:"subAcct"`
+	Label   string `json:"label"`
+	APIKey  string `json:"apiKey"`
+	Perm    string `json:"perm"`
+	IP      string `json:"ip"`
+	TS      string `json:"ts"`
 }
 
 type ModifySubAccountAPIKeyRequest struct {
-	SubAcct    string   `json:"subAcct"`
-	APIKey     string   `json:"apiKey"`
-	Label      *string  `json:"label,omitempty"`
-	Perm       []string `json:"perm,omitempty"`
-	IP         *string  `json:"ip,omitempty"`
+	SubAcct string   `json:"subAcct"`
+	APIKey  string   `json:"apiKey"`
+	Label   *string  `json:"label,omitempty"`
+	Perm    []string `json:"perm,omitempty"`
+	IP      *string  `json:"ip,omitempty"`
 }
 
 type DeleteSubAccountAPIKeyRequest struct {

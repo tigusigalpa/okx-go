@@ -6,9 +6,9 @@ type AnnouncementType struct {
 }
 
 type Announcement struct {
-	AnnID     string `json:"annId"`
-	AnnTitle  string `json:"annTitle"`
-	AnnType   string `json:"annType"`
-	PushTime  string `json:"pushTime"`
-	AnnDesc   string `json:"annDesc"`
+	AnnID    string `json:"annId"`
+	AnnTitle string `json:"annTitle"`
+	AnnType  string `json:"annType"`
+	PushTime string `json:"pushTime"`
+	AnnDesc  string `json:"annDesc"`
 }

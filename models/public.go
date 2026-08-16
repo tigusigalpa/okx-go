@@ -62,51 +62,51 @@ type FundingRate struct {
 }
 
 type FundingRateHistory struct {
-	FundingRate string `json:"fundingRate"`
-	FundingTime string `json:"fundingTime"`
-	InstID      string `json:"instId"`
-	InstType    string `json:"instType"`
+	FundingRate  string `json:"fundingRate"`
+	FundingTime  string `json:"fundingTime"`
+	InstID       string `json:"instId"`
+	InstType     string `json:"instType"`
 	RealizedRate string `json:"realizedRate"`
 }
 
 type PriceLimit struct {
-	BuyLmt  string `json:"buyLmt"`
-	InstID  string `json:"instId"`
+	BuyLmt   string `json:"buyLmt"`
+	InstID   string `json:"instId"`
 	InstType string `json:"instType"`
-	SellLmt string `json:"sellLmt"`
-	TS      string `json:"ts"`
+	SellLmt  string `json:"sellLmt"`
+	TS       string `json:"ts"`
 }
 
 type OptionSummary struct {
-	AskVol    string `json:"askVol"`
-	BidVol    string `json:"bidVol"`
-	Delta     string `json:"delta"`
-	DeltaBS   string `json:"deltaBS"`
-	Gamma     string `json:"gamma"`
-	GammaBS   string `json:"gammaBS"`
-	InstID    string `json:"instId"`
-	InstType  string `json:"instType"`
-	MarkVol   string `json:"markVol"`
-	RealVol   string `json:"realVol"`
-	Theta     string `json:"theta"`
-	ThetaBS   string `json:"thetaBS"`
-	TS        string `json:"ts"`
-	Vega      string `json:"vega"`
-	VegaBS    string `json:"vegaBS"`
+	AskVol   string `json:"askVol"`
+	BidVol   string `json:"bidVol"`
+	Delta    string `json:"delta"`
+	DeltaBS  string `json:"deltaBS"`
+	Gamma    string `json:"gamma"`
+	GammaBS  string `json:"gammaBS"`
+	InstID   string `json:"instId"`
+	InstType string `json:"instType"`
+	MarkVol  string `json:"markVol"`
+	RealVol  string `json:"realVol"`
+	Theta    string `json:"theta"`
+	ThetaBS  string `json:"thetaBS"`
+	TS       string `json:"ts"`
+	Vega     string `json:"vega"`
+	VegaBS   string `json:"vegaBS"`
 }
 
 type EstimatedPrice struct {
-	InstID      string `json:"instId"`
-	InstType    string `json:"instType"`
-	SettlePx    string `json:"settlePx"`
-	TS          string `json:"ts"`
+	InstID   string `json:"instId"`
+	InstType string `json:"instType"`
+	SettlePx string `json:"settlePx"`
+	TS       string `json:"ts"`
 }
 
 type DiscountRateInterestFreeQuota struct {
-	Amt          string                         `json:"amt"`
-	Ccy          string                         `json:"ccy"`
-	DiscountInfo []DiscountInfo                 `json:"discountInfo"`
-	DiscountLv   string                         `json:"discountLv"`
+	Amt          string         `json:"amt"`
+	Ccy          string         `json:"ccy"`
+	DiscountInfo []DiscountInfo `json:"discountInfo"`
+	DiscountLv   string         `json:"discountLv"`
 }
 
 type DiscountInfo struct {
@@ -125,14 +125,14 @@ type LiquidationOrder struct {
 }
 
 type LiquidationDetail struct {
-	BkLoss   string `json:"bkLoss"`
-	BkPx     string `json:"bkPx"`
-	Ccy      string `json:"ccy"`
-	InstID   string `json:"instId"`
-	PosSide  string `json:"posSide"`
-	Side     string `json:"side"`
-	Sz       string `json:"sz"`
-	TS       string `json:"ts"`
+	BkLoss  string `json:"bkLoss"`
+	BkPx    string `json:"bkPx"`
+	Ccy     string `json:"ccy"`
+	InstID  string `json:"instId"`
+	PosSide string `json:"posSide"`
+	Side    string `json:"side"`
+	Sz      string `json:"sz"`
+	TS      string `json:"ts"`
 }
 
 type MarkPrice struct {
@@ -163,21 +163,21 @@ type InterestRateLoanQuota struct {
 }
 
 type InterestRateBasic struct {
-	Ccy       string `json:"ccy"`
-	Quota     string `json:"quota"`
-	Rate      string `json:"rate"`
+	Ccy   string `json:"ccy"`
+	Quota string `json:"quota"`
+	Rate  string `json:"rate"`
 }
 
 type InterestRateVIP struct {
-	IrDiscount string `json:"irDiscount"`
+	IrDiscount    string `json:"irDiscount"`
 	LoanQuotaCoef string `json:"loanQuotaCoef"`
-	Level     string `json:"level"`
+	Level         string `json:"level"`
 }
 
 type VIPInterestRateLoanQuota struct {
-	Ccy       string `json:"ccy"`
-	Quota     string `json:"quota"`
-	Rate      string `json:"rate"`
+	Ccy   string `json:"ccy"`
+	Quota string `json:"quota"`
+	Rate  string `json:"rate"`
 }
 
 type Underlying struct {
@@ -190,10 +190,10 @@ type InsuranceFund struct {
 }
 
 type InsuranceFundDetail struct {
-	Amt    string `json:"amt"`
-	Ccy    string `json:"ccy"`
-	Type   string `json:"type"`
-	TS     string `json:"ts"`
+	Amt  string `json:"amt"`
+	Ccy  string `json:"ccy"`
+	Type string `json:"type"`
+	TS   string `json:"ts"`
 }
 
 type UnitConvert struct {
@@ -205,15 +205,15 @@ type UnitConvert struct {
 }
 
 type EconomicCalendar struct {
-	CalendarID   string `json:"calendarId"`
-	Country      string `json:"country"`
-	Region       string `json:"region"`
-	Event        string `json:"event"`
-	RefValue     string `json:"refValue"`
-	Previous     string `json:"previous"`
-	Forecast     string `json:"forecast"`
-	Actual       string `json:"actual"`
-	Impact       string `json:"impact"`
-	DateStr      string `json:"dateStr"`
-	TS           string `json:"ts"`
+	CalendarID string `json:"calendarId"`
+	Country    string `json:"country"`
+	Region     string `json:"region"`
+	Event      string `json:"event"`
+	RefValue   string `json:"refValue"`
+	Previous   string `json:"previous"`
+	Forecast   string `json:"forecast"`
+	Actual     string `json:"actual"`
+	Impact     string `json:"impact"`
+	DateStr    string `json:"dateStr"`
+	TS         string `json:"ts"`
 }

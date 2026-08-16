@@ -1,16 +1,16 @@
 package models
 
 type AssetBalance struct {
-	AvailBal string `json:"availBal"`
-	Bal      string `json:"bal"`
-	Ccy      string `json:"ccy"`
+	AvailBal  string `json:"availBal"`
+	Bal       string `json:"bal"`
+	Ccy       string `json:"ccy"`
 	FrozenBal string `json:"frozenBal"`
 }
 
 type AssetValuation struct {
-	Details      []AssetValuationDetail `json:"details"`
-	TotalBal     string                 `json:"totalBal"`
-	TS           string                 `json:"ts"`
+	Details  []AssetValuationDetail `json:"details"`
+	TotalBal string                 `json:"totalBal"`
+	TS       string                 `json:"ts"`
 }
 
 type AssetValuationDetail struct {
@@ -20,17 +20,17 @@ type AssetValuationDetail struct {
 }
 
 type TransferRequest struct {
-	Ccy      string  `json:"ccy"`
-	Amt      string  `json:"amt"`
-	From     string  `json:"from"`
-	To       string  `json:"to"`
-	Type     *string `json:"type,omitempty"`
-	SubAcct  *string `json:"subAcct,omitempty"`
-	InstID   *string `json:"instId,omitempty"`
-	ToInstID *string `json:"toInstId,omitempty"`
-	LoanTrans *bool  `json:"loanTrans,omitempty"`
+	Ccy         string  `json:"ccy"`
+	Amt         string  `json:"amt"`
+	From        string  `json:"from"`
+	To          string  `json:"to"`
+	Type        *string `json:"type,omitempty"`
+	SubAcct     *string `json:"subAcct,omitempty"`
+	InstID      *string `json:"instId,omitempty"`
+	ToInstID    *string `json:"toInstId,omitempty"`
+	LoanTrans   *bool   `json:"loanTrans,omitempty"`
 	OmitPosRisk *string `json:"omitPosRisk,omitempty"`
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID    *string `json:"clientId,omitempty"`
 }
 
 type TransferResponse struct {
@@ -90,16 +90,16 @@ type WithdrawalHistory struct {
 }
 
 type DepositAddress struct {
-	Addr     string           `json:"addr"`
-	Tag      *string          `json:"tag,omitempty"`
-	Memo     *string          `json:"memo,omitempty"`
-	PmtID    *string          `json:"pmtId,omitempty"`
-	Ccy      string           `json:"ccy"`
-	Chain    string           `json:"chain"`
-	To       string           `json:"to"`
-	Selected bool             `json:"selected"`
-	CtAddr   string           `json:"ctAddr"`
-	TS       string           `json:"ts"`
+	Addr     string  `json:"addr"`
+	Tag      *string `json:"tag,omitempty"`
+	Memo     *string `json:"memo,omitempty"`
+	PmtID    *string `json:"pmtId,omitempty"`
+	Ccy      string  `json:"ccy"`
+	Chain    string  `json:"chain"`
+	To       string  `json:"to"`
+	Selected bool    `json:"selected"`
+	CtAddr   string  `json:"ctAddr"`
+	TS       string  `json:"ts"`
 }
 
 type DepositHistory struct {
@@ -117,26 +117,26 @@ type DepositHistory struct {
 }
 
 type Currency struct {
-	CanDep       bool   `json:"canDep"`
-	CanInternal  bool   `json:"canInternal"`
-	CanWd        bool   `json:"canWd"`
-	Ccy          string `json:"ccy"`
-	Chain        string `json:"chain"`
-	LogoLink     string `json:"logoLink"`
-	MainNet      bool   `json:"mainNet"`
-	MaxFee       string `json:"maxFee"`
-	MaxWd        string `json:"maxWd"`
-	MinDep       string `json:"minDep"`
+	CanDep               bool   `json:"canDep"`
+	CanInternal          bool   `json:"canInternal"`
+	CanWd                bool   `json:"canWd"`
+	Ccy                  string `json:"ccy"`
+	Chain                string `json:"chain"`
+	LogoLink             string `json:"logoLink"`
+	MainNet              bool   `json:"mainNet"`
+	MaxFee               string `json:"maxFee"`
+	MaxWd                string `json:"maxWd"`
+	MinDep               string `json:"minDep"`
 	MinDepArrivalConfirm string `json:"minDepArrivalConfirm"`
-	MinFee       string `json:"minFee"`
-	MinWd        string `json:"minWd"`
-	MinWdUnlockConfirm string `json:"minWdUnlockConfirm"`
-	Name         string `json:"name"`
-	NeedTag      bool   `json:"needTag"`
-	UsedDepQuotaFixed string `json:"usedDepQuotaFixed"`
-	UsedWdQuota  string `json:"usedWdQuota"`
-	WdQuota      string `json:"wdQuota"`
-	WdTickSz     string `json:"wdTickSz"`
+	MinFee               string `json:"minFee"`
+	MinWd                string `json:"minWd"`
+	MinWdUnlockConfirm   string `json:"minWdUnlockConfirm"`
+	Name                 string `json:"name"`
+	NeedTag              bool   `json:"needTag"`
+	UsedDepQuotaFixed    string `json:"usedDepQuotaFixed"`
+	UsedWdQuota          string `json:"usedWdQuota"`
+	WdQuota              string `json:"wdQuota"`
+	WdTickSz             string `json:"wdTickSz"`
 }
 
 type AssetBill struct {
@@ -176,39 +176,39 @@ type LendingRate struct {
 }
 
 type ConvertCurrencyPair struct {
-	InstID   string `json:"instId"`
-	BaseCcy  string `json:"baseCcy"`
-	BaseCcyMax string `json:"baseCcyMax"`
-	BaseCcyMin string `json:"baseCcyMin"`
-	QuoteCcy string `json:"quoteCcy"`
+	InstID      string `json:"instId"`
+	BaseCcy     string `json:"baseCcy"`
+	BaseCcyMax  string `json:"baseCcyMax"`
+	BaseCcyMin  string `json:"baseCcyMin"`
+	QuoteCcy    string `json:"quoteCcy"`
 	QuoteCcyMax string `json:"quoteCcyMax"`
 	QuoteCcyMin string `json:"quoteCcyMin"`
 }
 
 type ConvertEstimateQuoteRequest struct {
-	BaseCcy   string  `json:"baseCcy"`
-	QuoteCcy  string  `json:"quoteCcy"`
-	Side      string  `json:"side"`
-	RfqSz     string  `json:"rfqSz"`
-	RfqSzCcy  string  `json:"rfqSzCcy"`
-	ClQReqID  *string `json:"clQReqId,omitempty"`
-	Tag       *string `json:"tag,omitempty"`
+	BaseCcy  string  `json:"baseCcy"`
+	QuoteCcy string  `json:"quoteCcy"`
+	Side     string  `json:"side"`
+	RfqSz    string  `json:"rfqSz"`
+	RfqSzCcy string  `json:"rfqSzCcy"`
+	ClQReqID *string `json:"clQReqId,omitempty"`
+	Tag      *string `json:"tag,omitempty"`
 }
 
 type ConvertEstimateQuoteResponse struct {
-	BaseCcy    string `json:"baseCcy"`
-	BaseSz     string `json:"baseSz"`
-	ClQReqID   string `json:"clQReqId"`
-	CnvtPx     string `json:"cnvtPx"`
-	OrigRfqSz  string `json:"origRfqSz"`
-	QuoteCcy   string `json:"quoteCcy"`
-	QuoteID    string `json:"quoteId"`
-	QuoteSz    string `json:"quoteSz"`
-	QuoteTime  string `json:"quoteTime"`
-	RfqSz      string `json:"rfqSz"`
-	RfqSzCcy   string `json:"rfqSzCcy"`
-	Side       string `json:"side"`
-	TTLMs      string `json:"ttlMs"`
+	BaseCcy   string `json:"baseCcy"`
+	BaseSz    string `json:"baseSz"`
+	ClQReqID  string `json:"clQReqId"`
+	CnvtPx    string `json:"cnvtPx"`
+	OrigRfqSz string `json:"origRfqSz"`
+	QuoteCcy  string `json:"quoteCcy"`
+	QuoteID   string `json:"quoteId"`
+	QuoteSz   string `json:"quoteSz"`
+	QuoteTime string `json:"quoteTime"`
+	RfqSz     string `json:"rfqSz"`
+	RfqSzCcy  string `json:"rfqSzCcy"`
+	Side      string `json:"side"`
+	TTLMs     string `json:"ttlMs"`
 }
 
 type ConvertTradeRequest struct {
@@ -223,18 +223,18 @@ type ConvertTradeRequest struct {
 }
 
 type ConvertTradeResponse struct {
-	BaseCcy   string `json:"baseCcy"`
-	ClTReqID  string `json:"clTReqId"`
-	FillBaseSz string `json:"fillBaseSz"`
-	FillPx    string `json:"fillPx"`
+	BaseCcy     string `json:"baseCcy"`
+	ClTReqID    string `json:"clTReqId"`
+	FillBaseSz  string `json:"fillBaseSz"`
+	FillPx      string `json:"fillPx"`
 	FillQuoteSz string `json:"fillQuoteSz"`
-	InstID    string `json:"instId"`
-	QuoteCcy  string `json:"quoteCcy"`
-	QuoteID   string `json:"quoteId"`
-	Side      string `json:"side"`
-	State     string `json:"state"`
-	TradeID   string `json:"tradeId"`
-	TS        string `json:"ts"`
+	InstID      string `json:"instId"`
+	QuoteCcy    string `json:"quoteCcy"`
+	QuoteID     string `json:"quoteId"`
+	Side        string `json:"side"`
+	State       string `json:"state"`
+	TradeID     string `json:"tradeId"`
+	TS          string `json:"ts"`
 }
 
 type MonthlyStatement struct {
