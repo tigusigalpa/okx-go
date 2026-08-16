@@ -1,6 +1,6 @@
-# okx-go
+# OKX Golang SDK
 
-![OKX Golang client](https://i.postimg.cc/kG35Y9dL/okx-api-golang.jpg)
+![OKX Golang client](https://i.postimg.cc/rpvZ9816/okx-golang-github-hero.jpg)
 
 [![Go Version](https://img.shields.io/badge/go-1.21+-blue.svg)](https://golang.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -23,13 +23,19 @@ go get github.com/tigusigalpa/okx-go
 - 53 WebSocket channels (public, private, business)
 - Demo trading mode (`x-simulated-trading: 1`)
 - `context.Context` everywhere
-- Typed request/response structs with generics
-- Rate limiter (token bucket, configurable per category)
+- Typed request/response structs
 - WebSocket reconnect with exponential backoff
 - Goroutine-safe
 - Dependencies: stdlib + `gorilla/websocket`
 
 ## Quick start
+
+Runnable examples:
+
+```bash
+go run ./examples/rest
+go run ./examples/websocket
+```
 
 ### REST
 

@@ -29,6 +29,14 @@ func TestNewWSClientWithOptions(t *testing.T) {
 
 	assert.NotNil(t, ws)
 	assert.True(t, ws.isDemo)
+	assert.Equal(t, WSDemoPublicURL, ws.url)
+}
+
+func TestWSClientCloseIsIdempotent(t *testing.T) {
+	ws := NewWSClient("", "", "", WSPublicURL)
+
+	assert.NoError(t, ws.Close())
+	assert.NoError(t, ws.Close())
 }
 
 func TestMakeSubKey(t *testing.T) {

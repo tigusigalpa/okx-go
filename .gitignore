@@ -18,6 +18,10 @@ vendor/
 
 # Go workspace file
 go.work
+go.work.sum
+
+# Local Go build cache
+.gocache/
 
 # IDE
 .idea/

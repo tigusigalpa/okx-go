@@ -17,14 +17,14 @@ import (
 
 const (
 	// WebSocket URLs
-	WSPublicURL         = "wss://ws.okx.com:8443/ws/v5/public"
-	WSPrivateURL        = "wss://ws.okx.com:8443/ws/v5/private"
-	WSBusinessURL       = "wss://ws.okx.com:8443/ws/v5/business"
-	WSPublicSBEURL      = "wss://ws.okx.com:8443/ws/v5/public-sbe"
-	WSDemoPublicURL     = "wss://wspap.okx.com:8443/ws/v5/public"
-	WSDemoPrivateURL    = "wss://wspap.okx.com:8443/ws/v5/private"
-	WSDemoBusinessURL   = "wss://wspap.okx.com:8443/ws/v5/business"
-	WSDemoPublicSBEURL  = "wss://wspap.okx.com:8443/ws/v5/public-sbe"
+	WSPublicURL        = "wss://ws.okx.com:8443/ws/v5/public"
+	WSPrivateURL       = "wss://ws.okx.com:8443/ws/v5/private"
+	WSBusinessURL      = "wss://ws.okx.com:8443/ws/v5/business"
+	WSPublicSBEURL     = "wss://ws.okx.com:8443/ws/v5/public-sbe"
+	WSDemoPublicURL    = "wss://wspap.okx.com:8443/ws/v5/public"
+	WSDemoPrivateURL   = "wss://wspap.okx.com:8443/ws/v5/private"
+	WSDemoBusinessURL  = "wss://wspap.okx.com:8443/ws/v5/business"
+	WSDemoPublicSBEURL = "wss://wspap.okx.com:8443/ws/v5/public-sbe"
 
 	pingInterval = 25 * time.Second
 	pongTimeout  = 30 * time.Second
@@ -42,10 +42,18 @@ type WSClient struct {
 	logger     Logger
 
 	mu            sync.RWMutex
-	subscriptions map[string]chan []byte
+	writeMu       sync.Mutex
+	subscriptions map[string]subscription
 	done          chan struct{}
+	closeOnce     sync.Once
 	reconnect     bool
 	authenticated bool
+}
+
+type subscription struct {
+	channel  string
+	args     map[string]interface{}
+	messages chan []byte
 }
 
 type WSOption func(*WSClient)
@@ -69,7 +77,7 @@ func NewWSClient(apiKey, secretKey, passphrase, url string, opts ...WSOption) *W
 		passphrase:    passphrase,
 		url:           url,
 		logger:        &noopLogger{},
-		subscriptions: make(map[string]chan []byte),
+		subscriptions: make(map[string]subscription),
 		done:          make(chan struct{}),
 		reconnect:     true,
 	}
@@ -77,11 +85,33 @@ func NewWSClient(apiKey, secretKey, passphrase, url string, opts ...WSOption) *W
 	for _, opt := range opts {
 		opt(ws)
 	}
+	if ws.isDemo {
+		ws.url = demoWebSocketURL(ws.url)
+	}
 
 	return ws
 }
 
+func demoWebSocketURL(url string) string {
+	switch url {
+	case WSPublicURL:
+		return WSDemoPublicURL
+	case WSPrivateURL:
+		return WSDemoPrivateURL
+	case WSBusinessURL:
+		return WSDemoBusinessURL
+	case WSPublicSBEURL:
+		return WSDemoPublicSBEURL
+	default:
+		return url
+	}
+}
+
 func (ws *WSClient) Connect(ctx context.Context) error {
+	return ws.connect(ctx, true)
+}
+
+func (ws *WSClient) connect(ctx context.Context, startPingPump bool) error {
 	dialer := websocket.DefaultDialer
 	conn, _, err := dialer.DialContext(ctx, ws.url, nil)
 	if err != nil {
@@ -95,7 +125,9 @@ func (ws *WSClient) Connect(ctx context.Context) error {
 	ws.logger.Info("WebSocket connected", "url", ws.url)
 
 	go ws.readPump()
-	go ws.pingPump()
+	if startPingPump {
+		go ws.pingPump()
+	}
 
 	return nil
 }
@@ -142,7 +174,11 @@ func (ws *WSClient) Subscribe(ctx context.Context, channel string, args map[stri
 	}
 
 	ch := make(chan []byte, 100)
-	ws.subscriptions[subKey] = ch
+	ws.subscriptions[subKey] = subscription{
+		channel:  channel,
+		args:     cloneArgs(args),
+		messages: ch,
+	}
 	ws.mu.Unlock()
 
 	subArgs := make(map[string]interface{})
@@ -173,13 +209,13 @@ func (ws *WSClient) Unsubscribe(channel string, args map[string]interface{}) err
 	subKey := ws.makeSubKey(channel, args)
 
 	ws.mu.Lock()
-	ch, exists := ws.subscriptions[subKey]
+	sub, exists := ws.subscriptions[subKey]
 	if !exists {
 		ws.mu.Unlock()
 		return fmt.Errorf("not subscribed to %s", subKey)
 	}
 	delete(ws.subscriptions, subKey)
-	close(ch)
+	close(sub.messages)
 	ws.mu.Unlock()
 
 	subArgs := make(map[string]interface{})
@@ -203,25 +239,25 @@ func (ws *WSClient) Unsubscribe(channel string, args map[string]interface{}) err
 }
 
 func (ws *WSClient) Close() error {
-	ws.mu.Lock()
-	ws.reconnect = false
-	ws.mu.Unlock()
+	var closeErr error
+	ws.closeOnce.Do(func() {
+		ws.mu.Lock()
+		ws.reconnect = false
+		close(ws.done)
 
-	close(ws.done)
+		for _, sub := range ws.subscriptions {
+			close(sub.messages)
+		}
+		ws.subscriptions = make(map[string]subscription)
+		conn := ws.conn
+		ws.conn = nil
+		ws.mu.Unlock()
 
-	ws.mu.Lock()
-	defer ws.mu.Unlock()
-
-	for _, ch := range ws.subscriptions {
-		close(ch)
-	}
-	ws.subscriptions = make(map[string]chan []byte)
-
-	if ws.conn != nil {
-		return ws.conn.Close()
-	}
-
-	return nil
+		if conn != nil {
+			closeErr = conn.Close()
+		}
+	})
+	return closeErr
 }
 
 func (ws *WSClient) send(v interface{}) error {
@@ -238,6 +274,11 @@ func (ws *WSClient) send(v interface{}) error {
 		return fmt.Errorf("failed to marshal message: %w", err)
 	}
 
+	// gorilla/websocket permits one concurrent reader and one concurrent writer.
+	// Subscription, login, and heartbeat messages all share this connection.
+	ws.writeMu.Lock()
+	defer ws.writeMu.Unlock()
+
 	conn.SetWriteDeadline(time.Now().Add(writeTimeout))
 	if err := conn.WriteMessage(websocket.TextMessage, data); err != nil {
 		return fmt.Errorf("failed to write message: %w", err)
@@ -247,12 +288,15 @@ func (ws *WSClient) send(v interface{}) error {
 }
 
 func (ws *WSClient) readPump() {
+	ws.mu.RLock()
+	conn := ws.conn
+	ws.mu.RUnlock()
+	if conn == nil {
+		return
+	}
+
 	defer func() {
-		ws.mu.Lock()
-		if ws.conn != nil {
-			ws.conn.Close()
-		}
-		ws.mu.Unlock()
+		_ = conn.Close()
 	}()
 
 	for {
@@ -262,19 +306,14 @@ func (ws *WSClient) readPump() {
 		default:
 		}
 
-		ws.mu.RLock()
-		conn := ws.conn
-		ws.mu.RUnlock()
-
-		if conn == nil {
-			return
-		}
-
 		conn.SetReadDeadline(time.Now().Add(readTimeout))
 		_, message, err := conn.ReadMessage()
 		if err != nil {
 			ws.logger.Error("WebSocket read error", "error", err)
-			if ws.reconnect {
+			ws.mu.RLock()
+			reconnect := ws.reconnect
+			ws.mu.RUnlock()
+			if reconnect {
 				ws.handleReconnect()
 			}
 			return
@@ -306,11 +345,14 @@ func (ws *WSClient) pingPump() {
 				return
 			}
 
+			ws.writeMu.Lock()
 			conn.SetWriteDeadline(time.Now().Add(writeTimeout))
 			if err := conn.WriteMessage(websocket.TextMessage, []byte("ping")); err != nil {
+				ws.writeMu.Unlock()
 				ws.logger.Error("WebSocket ping error", "error", err)
 				return
 			}
+			ws.writeMu.Unlock()
 			ws.logger.Debug("Sent ping")
 		}
 	}
@@ -352,16 +394,15 @@ func (ws *WSClient) handleMessage(message []byte) {
 		subKey := ws.makeSubKeyFromArg(channel, resp.Arg)
 
 		ws.mu.RLock()
-		ch, exists := ws.subscriptions[subKey]
-		ws.mu.RUnlock()
-
+		sub, exists := ws.subscriptions[subKey]
 		if exists {
 			select {
-			case ch <- message:
+			case sub.messages <- message:
 			default:
 				ws.logger.Warn("Channel buffer full, dropping message", "channel", channel)
 			}
 		}
+		ws.mu.RUnlock()
 	}
 }
 
@@ -380,7 +421,7 @@ func (ws *WSClient) handleReconnect() {
 		time.Sleep(backoff)
 
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		err := ws.Connect(ctx)
+		err := ws.connect(ctx, false)
 		cancel()
 
 		if err != nil {
@@ -403,15 +444,34 @@ func (ws *WSClient) handleReconnect() {
 		}
 
 		ws.mu.RLock()
-		subs := make(map[string]map[string]interface{})
-		for key := range ws.subscriptions {
-			subs[key] = nil
+		subs := make([]subscription, 0, len(ws.subscriptions))
+		for _, sub := range ws.subscriptions {
+			subs = append(subs, sub)
 		}
 		ws.mu.RUnlock()
+
+		for _, sub := range subs {
+			args := make(map[string]interface{}, len(sub.args)+1)
+			args["channel"] = sub.channel
+			for key, value := range sub.args {
+				args[key] = value
+			}
+			if err := ws.send(models.WSSubscribeRequest{Op: "subscribe", Args: []map[string]interface{}{args}}); err != nil {
+				ws.logger.Error("Failed to restore subscription", "channel", sub.channel, "error", err)
+			}
+		}
 
 		ws.logger.Info("Reconnected successfully")
 		return
 	}
+}
+
+func cloneArgs(args map[string]interface{}) map[string]interface{} {
+	cloned := make(map[string]interface{}, len(args))
+	for key, value := range args {
+		cloned[key] = value
+	}
+	return cloned
 }
 
 func (ws *WSClient) makeSubKey(channel string, args map[string]interface{}) string {
