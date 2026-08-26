@@ -9,7 +9,6 @@ type OKXResponse[T any] struct {
 
 // Paginator provides cursor-based pagination support.
 type Paginator[T any] struct {
-	client     interface{}
 	fetchFunc  func(after string) ([]T, string, error)
 	after      string
 	hasMore    bool

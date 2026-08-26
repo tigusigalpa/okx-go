@@ -2,6 +2,11 @@
 
 All notable changes to this project are documented in this file.
 
+## [v1.1.0] - Unreleased
+
+### Changed
+- **Breaking:** renamed `OKXError` to `Error` to avoid a stuttering exported name (`okx.OKXError`). Update type assertions and `errors.As` targets to use `*okx.Error`.
+
 ## [v1.0.3] - 2026-08-08
 
 ### Added

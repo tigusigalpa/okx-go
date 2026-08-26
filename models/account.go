@@ -1,5 +1,6 @@
 package models
 
+// Balance represents an OKX API request or response value.
 type Balance struct {
 	AdjEq       *string         `json:"adjEq,omitempty"`
 	BorrowFroz  *string         `json:"borrowFroz,omitempty"`
@@ -15,6 +16,7 @@ type Balance struct {
 	UplTotalEq  *string         `json:"uplTotalEq,omitempty"`
 }
 
+// BalanceDetail represents an OKX API request or response value.
 type BalanceDetail struct {
 	AvailBal      *string `json:"availBal,omitempty"`
 	AvailEq       *string `json:"availEq,omitempty"`
@@ -47,6 +49,7 @@ type BalanceDetail struct {
 	UplLiab       *string `json:"uplLiab,omitempty"`
 }
 
+// Position represents an OKX API request or response value.
 type Position struct {
 	ADL         *string `json:"adl,omitempty"`
 	AvailPos    *string `json:"availPos,omitempty"`
@@ -88,6 +91,7 @@ type Position struct {
 	VegaPA      *string `json:"vegaPA,omitempty"`
 }
 
+// AccountConfig represents an OKX API request or response value.
 type AccountConfig struct {
 	AcctLv         *string `json:"acctLv,omitempty"`
 	AutoLoan       *bool   `json:"autoLoan,omitempty"`
@@ -101,6 +105,7 @@ type AccountConfig struct {
 	UID            *string `json:"uid,omitempty"`
 }
 
+// LeverageInfo represents an OKX API request or response value.
 type LeverageInfo struct {
 	InstID  string  `json:"instId"`
 	MgnMode string  `json:"mgnMode"`
@@ -108,6 +113,7 @@ type LeverageInfo struct {
 	Lever   string  `json:"lever"`
 }
 
+// MaxSize represents an OKX API request or response value.
 type MaxSize struct {
 	InstID  string  `json:"instId"`
 	Ccy     *string `json:"ccy,omitempty"`
@@ -115,12 +121,14 @@ type MaxSize struct {
 	MaxSell string  `json:"maxSell"`
 }
 
+// MaxAvailSize represents an OKX API request or response value.
 type MaxAvailSize struct {
 	InstID    string `json:"instId"`
 	AvailBuy  string `json:"availBuy"`
 	AvailSell string `json:"availSell"`
 }
 
+// MaxLoan represents an OKX API request or response value.
 type MaxLoan struct {
 	InstID  string `json:"instId"`
 	MgnMode string `json:"mgnMode"`
@@ -130,6 +138,7 @@ type MaxLoan struct {
 	Side    string `json:"side"`
 }
 
+// TradeFee represents an OKX API request or response value.
 type TradeFee struct {
 	Category string  `json:"category"`
 	Delivery *string `json:"delivery,omitempty"`
@@ -143,6 +152,7 @@ type TradeFee struct {
 	TS       string  `json:"ts"`
 }
 
+// InterestAccrued represents an OKX API request or response value.
 type InterestAccrued struct {
 	Ccy          string  `json:"ccy"`
 	InstID       *string `json:"instId,omitempty"`
@@ -154,11 +164,13 @@ type InterestAccrued struct {
 	Type         string  `json:"type"`
 }
 
+// InterestRate represents an OKX API request or response value.
 type InterestRate struct {
 	Ccy          string `json:"ccy"`
 	InterestRate string `json:"interestRate"`
 }
 
+// Greeks represents an OKX API request or response value.
 type Greeks struct {
 	GreeksType string `json:"greeksType"`
 	ThetaBS    string `json:"thetaBS"`
@@ -172,6 +184,7 @@ type Greeks struct {
 	TS         string `json:"ts"`
 }
 
+// Bill represents an OKX API request or response value.
 type Bill struct {
 	Bal       string  `json:"bal"`
 	BalChg    string  `json:"balChg"`
@@ -195,6 +208,7 @@ type Bill struct {
 	Type      string  `json:"type"`
 }
 
+// SetLeverageRequest represents an OKX API request or response value.
 type SetLeverageRequest struct {
 	InstID  *string `json:"instId,omitempty"`
 	Ccy     *string `json:"ccy,omitempty"`
@@ -203,14 +217,17 @@ type SetLeverageRequest struct {
 	PosSide *string `json:"posSide,omitempty"`
 }
 
+// SetPositionModeRequest represents an OKX API request or response value.
 type SetPositionModeRequest struct {
 	PosMode string `json:"posMode"`
 }
 
+// SetGreeksRequest represents an OKX API request or response value.
 type SetGreeksRequest struct {
 	GreeksType string `json:"greeksType"`
 }
 
+// PositionMarginBalanceRequest represents an OKX API request or response value.
 type PositionMarginBalanceRequest struct {
 	InstID    string  `json:"instId"`
 	PosSide   string  `json:"posSide"`
@@ -221,6 +238,7 @@ type PositionMarginBalanceRequest struct {
 	LoanTrans *bool   `json:"loanTrans,omitempty"`
 }
 
+// MaxWithdrawal represents an OKX API request or response value.
 type MaxWithdrawal struct {
 	Ccy               string `json:"ccy"`
 	MaxWd             string `json:"maxWd"`
@@ -229,6 +247,7 @@ type MaxWithdrawal struct {
 	SpotOffsetMaxWdEx string `json:"spotOffsetMaxWdEx"`
 }
 
+// RiskState represents an OKX API request or response value.
 type RiskState struct {
 	AtRisk    bool     `json:"atRisk"`
 	AtRiskIdx []string `json:"atRiskIdx,omitempty"`
@@ -236,12 +255,14 @@ type RiskState struct {
 	TS        string   `json:"ts"`
 }
 
+// BorrowRepayRequest represents an OKX API request or response value.
 type BorrowRepayRequest struct {
 	Ccy  string `json:"ccy"`
 	Side string `json:"side"`
 	Amt  string `json:"amt"`
 }
 
+// BorrowRepayHistory represents an OKX API request or response value.
 type BorrowRepayHistory struct {
 	Ccy  string `json:"ccy"`
 	Side string `json:"side"`
@@ -249,6 +270,7 @@ type BorrowRepayHistory struct {
 	TS   string `json:"ts"`
 }
 
+// InterestLimits represents an OKX API request or response value.
 type InterestLimits struct {
 	Debt             string                `json:"debt"`
 	Interest         string                `json:"interest"`
@@ -257,6 +279,7 @@ type InterestLimits struct {
 	Records          []InterestLimitRecord `json:"records"`
 }
 
+// InterestLimitRecord represents an OKX API request or response value.
 type InterestLimitRecord struct {
 	Ccy        string `json:"ccy"`
 	Interest   string `json:"interest"`
@@ -266,6 +289,7 @@ type InterestLimitRecord struct {
 	UsedLmt    string `json:"usedLmt"`
 }
 
+// PositionHistory represents an OKX API request or response value.
 type PositionHistory struct {
 	CloseAvgPx    string  `json:"closeAvgPx"`
 	CloseTotalPos string  `json:"closeTotalPos"`
@@ -286,11 +310,13 @@ type PositionHistory struct {
 	UTime         string  `json:"uTime"`
 }
 
+// AccountLevel represents an OKX API request or response value.
 type AccountLevel struct {
 	Level    string `json:"level"`
 	AutoLoan bool   `json:"autoLoan"`
 }
 
+// MMPConfig represents an OKX API request or response value.
 type MMPConfig struct {
 	InstFamily     string `json:"instFamily"`
 	TimeInterval   string `json:"timeInterval"`
@@ -298,6 +324,7 @@ type MMPConfig struct {
 	QtyLimit       string `json:"qtyLimit"`
 }
 
+// MMPState represents an OKX API request or response value.
 type MMPState struct {
 	InstFamily  string `json:"instFamily"`
 	Frozen      bool   `json:"frozen"`

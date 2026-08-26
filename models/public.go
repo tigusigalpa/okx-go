@@ -1,5 +1,6 @@
 package models
 
+// Instrument represents an OKX API request or response value.
 type Instrument struct {
 	Alias        *string `json:"alias,omitempty"`
 	BaseCcy      *string `json:"baseCcy,omitempty"`
@@ -33,17 +34,20 @@ type Instrument struct {
 	Uly          *string `json:"uly,omitempty"`
 }
 
+// DeliveryExerciseHistory represents an OKX API request or response value.
 type DeliveryExerciseHistory struct {
 	Details []DeliveryExerciseDetail `json:"details"`
 	TS      string                   `json:"ts"`
 }
 
+// DeliveryExerciseDetail represents an OKX API request or response value.
 type DeliveryExerciseDetail struct {
 	InsID string `json:"insId"`
 	Px    string `json:"px"`
 	Type  string `json:"type"`
 }
 
+// OpenInterest represents an OKX API request or response value.
 type OpenInterest struct {
 	InstID   string `json:"instId"`
 	InstType string `json:"instType"`
@@ -52,6 +56,7 @@ type OpenInterest struct {
 	TS       string `json:"ts"`
 }
 
+// FundingRate represents an OKX API request or response value.
 type FundingRate struct {
 	FundingRate     string `json:"fundingRate"`
 	FundingTime     string `json:"fundingTime"`
@@ -61,6 +66,7 @@ type FundingRate struct {
 	NextFundingTime string `json:"nextFundingTime"`
 }
 
+// FundingRateHistory represents an OKX API request or response value.
 type FundingRateHistory struct {
 	FundingRate  string `json:"fundingRate"`
 	FundingTime  string `json:"fundingTime"`
@@ -69,6 +75,7 @@ type FundingRateHistory struct {
 	RealizedRate string `json:"realizedRate"`
 }
 
+// PriceLimit represents an OKX API request or response value.
 type PriceLimit struct {
 	BuyLmt   string `json:"buyLmt"`
 	InstID   string `json:"instId"`
@@ -77,6 +84,7 @@ type PriceLimit struct {
 	TS       string `json:"ts"`
 }
 
+// OptionSummary represents an OKX API request or response value.
 type OptionSummary struct {
 	AskVol   string `json:"askVol"`
 	BidVol   string `json:"bidVol"`
@@ -95,6 +103,7 @@ type OptionSummary struct {
 	VegaBS   string `json:"vegaBS"`
 }
 
+// EstimatedPrice represents an OKX API request or response value.
 type EstimatedPrice struct {
 	InstID   string `json:"instId"`
 	InstType string `json:"instType"`
@@ -102,6 +111,7 @@ type EstimatedPrice struct {
 	TS       string `json:"ts"`
 }
 
+// DiscountRateInterestFreeQuota represents an OKX API request or response value.
 type DiscountRateInterestFreeQuota struct {
 	Amt          string         `json:"amt"`
 	Ccy          string         `json:"ccy"`
@@ -109,21 +119,25 @@ type DiscountRateInterestFreeQuota struct {
 	DiscountLv   string         `json:"discountLv"`
 }
 
+// DiscountInfo represents an OKX API request or response value.
 type DiscountInfo struct {
 	DiscountRate string `json:"discountRate"`
 	MaxAmt       string `json:"maxAmt"`
 	MinAmt       string `json:"minAmt"`
 }
 
+// SystemTime represents an OKX API request or response value.
 type SystemTime struct {
 	TS string `json:"ts"`
 }
 
+// LiquidationOrder represents an OKX API request or response value.
 type LiquidationOrder struct {
 	Details []LiquidationDetail `json:"details"`
 	TS      string              `json:"ts"`
 }
 
+// LiquidationDetail represents an OKX API request or response value.
 type LiquidationDetail struct {
 	BkLoss  string `json:"bkLoss"`
 	BkPx    string `json:"bkPx"`
@@ -135,6 +149,7 @@ type LiquidationDetail struct {
 	TS      string `json:"ts"`
 }
 
+// MarkPrice represents an OKX API request or response value.
 type MarkPrice struct {
 	InstID   string `json:"instId"`
 	InstType string `json:"instType"`
@@ -142,6 +157,7 @@ type MarkPrice struct {
 	TS       string `json:"ts"`
 }
 
+// PositionTier represents an OKX API request or response value.
 type PositionTier struct {
 	BaseMaxLoan  string `json:"baseMaxLoan"`
 	BaseMaxSz    string `json:"baseMaxSz"`
@@ -157,38 +173,45 @@ type PositionTier struct {
 	Uly          string `json:"uly"`
 }
 
+// InterestRateLoanQuota represents an OKX API request or response value.
 type InterestRateLoanQuota struct {
 	Basic []InterestRateBasic `json:"basic"`
 	Vip   []InterestRateVIP   `json:"vip"`
 }
 
+// InterestRateBasic represents an OKX API request or response value.
 type InterestRateBasic struct {
 	Ccy   string `json:"ccy"`
 	Quota string `json:"quota"`
 	Rate  string `json:"rate"`
 }
 
+// InterestRateVIP represents an OKX API request or response value.
 type InterestRateVIP struct {
 	IrDiscount    string `json:"irDiscount"`
 	LoanQuotaCoef string `json:"loanQuotaCoef"`
 	Level         string `json:"level"`
 }
 
+// VIPInterestRateLoanQuota represents an OKX API request or response value.
 type VIPInterestRateLoanQuota struct {
 	Ccy   string `json:"ccy"`
 	Quota string `json:"quota"`
 	Rate  string `json:"rate"`
 }
 
+// Underlying represents an OKX API request or response value.
 type Underlying struct {
 	Uly string `json:"uly"`
 }
 
+// InsuranceFund represents an OKX API request or response value.
 type InsuranceFund struct {
 	Details []InsuranceFundDetail `json:"details"`
 	Total   string                `json:"total"`
 }
 
+// InsuranceFundDetail represents an OKX API request or response value.
 type InsuranceFundDetail struct {
 	Amt  string `json:"amt"`
 	Ccy  string `json:"ccy"`
@@ -196,6 +219,7 @@ type InsuranceFundDetail struct {
 	TS   string `json:"ts"`
 }
 
+// UnitConvert represents an OKX API request or response value.
 type UnitConvert struct {
 	InstID string `json:"instId"`
 	Px     string `json:"px"`
@@ -204,6 +228,7 @@ type UnitConvert struct {
 	Unit   string `json:"unit"`
 }
 
+// EconomicCalendar represents an OKX API request or response value.
 type EconomicCalendar struct {
 	CalendarID string `json:"calendarId"`
 	Country    string `json:"country"`

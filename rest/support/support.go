@@ -7,14 +7,17 @@ import (
 	"github.com/tigusigalpa/okx-go/models"
 )
 
+// Client provides access to the OKX API endpoints in this package.
 type Client struct {
 	doPublicFunc func(ctx context.Context, method, path string, params map[string]string, result interface{}) error
 }
 
+// NewClient creates a client for the API endpoints in this package.
 func NewClient(doPublicFunc func(ctx context.Context, method, path string, params map[string]string, result interface{}) error) *Client {
 	return &Client{doPublicFunc: doPublicFunc}
 }
 
+// GetAnnouncementTypes invokes the corresponding OKX API operation.
 func (c *Client) GetAnnouncementTypes(ctx context.Context) ([]models.AnnouncementType, error) {
 	var result []models.AnnouncementType
 	if err := c.doPublicFunc(ctx, http.MethodGet, "/api/v5/support/announcement-types", nil, &result); err != nil {
@@ -23,6 +26,7 @@ func (c *Client) GetAnnouncementTypes(ctx context.Context) ([]models.Announcemen
 	return result, nil
 }
 
+// GetAnnouncements invokes the corresponding OKX API operation.
 func (c *Client) GetAnnouncements(ctx context.Context, annType *string, page *string, limit *string) ([]models.Announcement, error) {
 	params := make(map[string]string)
 	if annType != nil {

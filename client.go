@@ -11,7 +11,6 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"sync"
 	"time"
 )
 
@@ -32,7 +31,6 @@ type Client struct {
 	isDemo             bool
 	logger             Logger
 	rateLimiterEnabled bool
-	mu                 sync.RWMutex
 }
 
 // NewClient creates a new OKX REST API client.
@@ -147,7 +145,7 @@ func (c *Client) do(ctx context.Context, method, path string, params map[string]
 	}
 
 	if envelope.Code != "0" {
-		okxErr := &OKXError{
+		okxErr := &Error{
 			Code:    envelope.Code,
 			Message: envelope.Msg,
 			Raw:     respBody,
@@ -215,7 +213,7 @@ func (c *Client) doPublic(ctx context.Context, method, path string, params map[s
 	}
 
 	if envelope.Code != "0" {
-		okxErr := &OKXError{
+		okxErr := &Error{
 			Code:    envelope.Code,
 			Message: envelope.Msg,
 			Raw:     respBody,

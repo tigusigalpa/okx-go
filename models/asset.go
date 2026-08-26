@@ -1,5 +1,6 @@
 package models
 
+// AssetBalance represents an OKX API request or response value.
 type AssetBalance struct {
 	AvailBal  string `json:"availBal"`
 	Bal       string `json:"bal"`
@@ -7,18 +8,21 @@ type AssetBalance struct {
 	FrozenBal string `json:"frozenBal"`
 }
 
+// AssetValuation represents an OKX API request or response value.
 type AssetValuation struct {
 	Details  []AssetValuationDetail `json:"details"`
 	TotalBal string                 `json:"totalBal"`
 	TS       string                 `json:"ts"`
 }
 
+// AssetValuationDetail represents an OKX API request or response value.
 type AssetValuationDetail struct {
 	Ccy    string `json:"ccy"`
 	Bal    string `json:"bal"`
 	ValBal string `json:"valBal"`
 }
 
+// TransferRequest represents an OKX API request or response value.
 type TransferRequest struct {
 	Ccy         string  `json:"ccy"`
 	Amt         string  `json:"amt"`
@@ -33,6 +37,7 @@ type TransferRequest struct {
 	ClientID    *string `json:"clientId,omitempty"`
 }
 
+// TransferResponse represents an OKX API request or response value.
 type TransferResponse struct {
 	TransID  string `json:"transId"`
 	Ccy      string `json:"ccy"`
@@ -42,6 +47,7 @@ type TransferResponse struct {
 	To       string `json:"to"`
 }
 
+// TransferState represents an OKX API request or response value.
 type TransferState struct {
 	TransID  string  `json:"transId"`
 	Ccy      string  `json:"ccy"`
@@ -56,6 +62,7 @@ type TransferState struct {
 	ToInstID *string `json:"toInstId,omitempty"`
 }
 
+// WithdrawalRequest represents an OKX API request or response value.
 type WithdrawalRequest struct {
 	Ccy      string  `json:"ccy"`
 	Amt      string  `json:"amt"`
@@ -67,6 +74,7 @@ type WithdrawalRequest struct {
 	ClientID *string `json:"clientId,omitempty"`
 }
 
+// WithdrawalResponse represents an OKX API request or response value.
 type WithdrawalResponse struct {
 	Amt      string `json:"amt"`
 	WdID     string `json:"wdId"`
@@ -75,6 +83,7 @@ type WithdrawalResponse struct {
 	Chain    string `json:"chain"`
 }
 
+// WithdrawalHistory represents an OKX API request or response value.
 type WithdrawalHistory struct {
 	Chain    string  `json:"chain"`
 	Fee      string  `json:"fee"`
@@ -89,6 +98,7 @@ type WithdrawalHistory struct {
 	WdID     string  `json:"wdId"`
 }
 
+// DepositAddress represents an OKX API request or response value.
 type DepositAddress struct {
 	Addr     string  `json:"addr"`
 	Tag      *string `json:"tag,omitempty"`
@@ -102,6 +112,7 @@ type DepositAddress struct {
 	TS       string  `json:"ts"`
 }
 
+// DepositHistory represents an OKX API request or response value.
 type DepositHistory struct {
 	ActualDepBlkConfirm string  `json:"actualDepBlkConfirm"`
 	Amt                 string  `json:"amt"`
@@ -116,6 +127,7 @@ type DepositHistory struct {
 	TxID                string  `json:"txId"`
 }
 
+// Currency represents an OKX API request or response value.
 type Currency struct {
 	CanDep               bool   `json:"canDep"`
 	CanInternal          bool   `json:"canInternal"`
@@ -139,6 +151,7 @@ type Currency struct {
 	WdTickSz             string `json:"wdTickSz"`
 }
 
+// AssetBill represents an OKX API request or response value.
 type AssetBill struct {
 	BillID   string  `json:"billId"`
 	Ccy      string  `json:"ccy"`
@@ -149,6 +162,7 @@ type AssetBill struct {
 	TS       string  `json:"ts"`
 }
 
+// SavingBalance represents an OKX API request or response value.
 type SavingBalance struct {
 	Ccy      string `json:"ccy"`
 	Amt      string `json:"amt"`
@@ -156,6 +170,7 @@ type SavingBalance struct {
 	Rate     string `json:"rate"`
 }
 
+// PurchaseRedemptRequest represents an OKX API request or response value.
 type PurchaseRedemptRequest struct {
 	Ccy  string `json:"ccy"`
 	Amt  string `json:"amt"`
@@ -163,6 +178,7 @@ type PurchaseRedemptRequest struct {
 	Rate string `json:"rate"`
 }
 
+// PurchaseRedemptResponse represents an OKX API request or response value.
 type PurchaseRedemptResponse struct {
 	Ccy  string `json:"ccy"`
 	Amt  string `json:"amt"`
@@ -170,11 +186,13 @@ type PurchaseRedemptResponse struct {
 	Rate string `json:"rate"`
 }
 
+// LendingRate represents an OKX API request or response value.
 type LendingRate struct {
 	Ccy  string `json:"ccy"`
 	Rate string `json:"rate"`
 }
 
+// ConvertCurrencyPair represents an OKX API request or response value.
 type ConvertCurrencyPair struct {
 	InstID      string `json:"instId"`
 	BaseCcy     string `json:"baseCcy"`
@@ -185,6 +203,7 @@ type ConvertCurrencyPair struct {
 	QuoteCcyMin string `json:"quoteCcyMin"`
 }
 
+// ConvertEstimateQuoteRequest represents an OKX API request or response value.
 type ConvertEstimateQuoteRequest struct {
 	BaseCcy  string  `json:"baseCcy"`
 	QuoteCcy string  `json:"quoteCcy"`
@@ -195,6 +214,7 @@ type ConvertEstimateQuoteRequest struct {
 	Tag      *string `json:"tag,omitempty"`
 }
 
+// ConvertEstimateQuoteResponse represents an OKX API request or response value.
 type ConvertEstimateQuoteResponse struct {
 	BaseCcy   string `json:"baseCcy"`
 	BaseSz    string `json:"baseSz"`
@@ -211,6 +231,7 @@ type ConvertEstimateQuoteResponse struct {
 	TTLMs     string `json:"ttlMs"`
 }
 
+// ConvertTradeRequest represents an OKX API request or response value.
 type ConvertTradeRequest struct {
 	QuoteID  string  `json:"quoteId"`
 	BaseCcy  string  `json:"baseCcy"`
@@ -222,6 +243,7 @@ type ConvertTradeRequest struct {
 	Tag      *string `json:"tag,omitempty"`
 }
 
+// ConvertTradeResponse represents an OKX API request or response value.
 type ConvertTradeResponse struct {
 	BaseCcy     string `json:"baseCcy"`
 	ClTReqID    string `json:"clTReqId"`
@@ -237,6 +259,7 @@ type ConvertTradeResponse struct {
 	TS          string `json:"ts"`
 }
 
+// MonthlyStatement represents an OKX API request or response value.
 type MonthlyStatement struct {
 	Year  string `json:"year"`
 	Month string `json:"month"`

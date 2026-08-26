@@ -4,6 +4,8 @@
 
 [![Go Version](https://img.shields.io/badge/go-1.21+-blue.svg)](https://golang.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Go Report Card](https://goreportcard.com/badge/github.com/tigusigalpa/okx-go)](https://goreportcard.com/report/github.com/tigusigalpa/okx-go)
+[![codecov](https://codecov.io/gh/tigusigalpa/okx-go/graph/badge.svg)](https://codecov.io/gh/tigusigalpa/okx-go)
 
 Go client for the [OKX v5 API](https://www.okx.com/docs-v5/en/). Covers 335 REST endpoints and 53 WebSocket channels.
 
@@ -16,6 +18,9 @@ Go client for the [OKX v5 API](https://www.okx.com/docs-v5/en/). Covers 335 REST
 ```bash
 go get github.com/tigusigalpa/okx-go
 ```
+
+> [!IMPORTANT]
+> **Breaking change in v1.1.0:** `OKXError` has been renamed to `Error` to follow Go naming conventions. Update type assertions and `errors.As` targets from `*okx.OKXError` to `*okx.Error` when upgrading.
 
 ## What's inside
 
@@ -260,7 +265,7 @@ if err != nil {
         // bad credentials
     } else if errors.Is(err, okx.ErrRateLimited) {
         // slow down
-    } else if okxErr, ok := err.(*okx.OKXError); ok {
+    } else if okxErr, ok := err.(*okx.Error); ok {
         fmt.Printf("code=%s msg=%s\n", okxErr.Code, okxErr.Message)
     }
 }

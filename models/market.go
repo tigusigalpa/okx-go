@@ -5,6 +5,7 @@ import (
 	"fmt"
 )
 
+// Ticker represents an OKX API request or response value.
 type Ticker struct {
 	InstType  string `json:"instType"`
 	InstID    string `json:"instId"`
@@ -24,6 +25,7 @@ type Ticker struct {
 	TS        string `json:"ts"`
 }
 
+// IndexTicker represents an OKX API request or response value.
 type IndexTicker struct {
 	InstID  string `json:"instId"`
 	IdxPx   string `json:"idxPx"`
@@ -35,12 +37,14 @@ type IndexTicker struct {
 	TS      string `json:"ts"`
 }
 
+// OrderBook represents an OKX API request or response value.
 type OrderBook struct {
 	Asks [][]string `json:"asks"`
 	Bids [][]string `json:"bids"`
 	TS   string     `json:"ts"`
 }
 
+// Candle represents an OKX API request or response value.
 type Candle struct {
 	TS          string `json:"ts"`
 	O           string `json:"o"`
@@ -53,6 +57,7 @@ type Candle struct {
 	Confirm     string `json:"confirm"`
 }
 
+// UnmarshalJSON invokes the corresponding OKX API operation.
 func (c *Candle) UnmarshalJSON(data []byte) error {
 	var arr []string
 	if err := json.Unmarshal(data, &arr); err != nil {
@@ -84,6 +89,7 @@ func (c *Candle) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// Trade represents an OKX API request or response value.
 type Trade struct {
 	InstID  string `json:"instId"`
 	TradeID string `json:"tradeId"`
@@ -93,12 +99,14 @@ type Trade struct {
 	TS      string `json:"ts"`
 }
 
+// Platform24Volume represents an OKX API request or response value.
 type Platform24Volume struct {
 	VolCcy string `json:"volCcy"`
 	VolUsd string `json:"volUsd"`
 	TS     string `json:"ts"`
 }
 
+// OpenOracle represents an OKX API request or response value.
 type OpenOracle struct {
 	Messages   []string `json:"messages"`
 	Prices     []string `json:"prices"`
@@ -106,10 +114,12 @@ type OpenOracle struct {
 	Timestamp  string   `json:"timestamp"`
 }
 
+// ExchangeRate represents an OKX API request or response value.
 type ExchangeRate struct {
 	UsdCny string `json:"usdCny"`
 }
 
+// IndexComponents represents an OKX API request or response value.
 type IndexComponents struct {
 	Index      string           `json:"index"`
 	Last       string           `json:"last"`
@@ -117,6 +127,7 @@ type IndexComponents struct {
 	TS         string           `json:"ts"`
 }
 
+// IndexComponent represents an OKX API request or response value.
 type IndexComponent struct {
 	Exch   string `json:"exch"`
 	Symbol string `json:"symbol"`
@@ -124,6 +135,7 @@ type IndexComponent struct {
 	Wgt    string `json:"wgt"`
 }
 
+// BlockTicker represents an OKX API request or response value.
 type BlockTicker struct {
 	InstID    string `json:"instId"`
 	InstType  string `json:"instType"`
@@ -132,6 +144,7 @@ type BlockTicker struct {
 	TS        string `json:"ts"`
 }
 
+// BlockTrade represents an OKX API request or response value.
 type BlockTrade struct {
 	InstID  string `json:"instId"`
 	TradeID string `json:"tradeId"`

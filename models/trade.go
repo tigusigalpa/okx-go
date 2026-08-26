@@ -1,5 +1,6 @@
 package models
 
+// PlaceOrderRequest represents an OKX API request or response value.
 type PlaceOrderRequest struct {
 	InstID            string                   `json:"instId"`
 	TdMode            string                   `json:"tdMode"`
@@ -27,6 +28,7 @@ type PlaceOrderRequest struct {
 	AttachAlgoOrds    []AttachAlgoOrderRequest `json:"attachAlgoOrds,omitempty"`
 }
 
+// PlaceOrderResponse represents an OKX API request or response value.
 type PlaceOrderResponse struct {
 	ClOrdID string `json:"clOrdId"`
 	OrdID   string `json:"ordId"`
@@ -35,12 +37,14 @@ type PlaceOrderResponse struct {
 	SMsg    string `json:"sMsg"`
 }
 
+// CancelOrderRequest represents an OKX API request or response value.
 type CancelOrderRequest struct {
 	InstID  string  `json:"instId"`
 	OrdID   *string `json:"ordId,omitempty"`
 	ClOrdID *string `json:"clOrdId,omitempty"`
 }
 
+// CancelOrderResponse represents an OKX API request or response value.
 type CancelOrderResponse struct {
 	ClOrdID string `json:"clOrdId"`
 	OrdID   string `json:"ordId"`
@@ -48,6 +52,7 @@ type CancelOrderResponse struct {
 	SMsg    string `json:"sMsg"`
 }
 
+// AmendOrderRequest represents an OKX API request or response value.
 type AmendOrderRequest struct {
 	InstID             string  `json:"instId"`
 	CxlOnFail          *bool   `json:"cxlOnFail,omitempty"`
@@ -64,6 +69,7 @@ type AmendOrderRequest struct {
 	NewSlTriggerPxType *string `json:"newSlTriggerPxType,omitempty"`
 }
 
+// AmendOrderResponse represents an OKX API request or response value.
 type AmendOrderResponse struct {
 	ClOrdID string `json:"clOrdId"`
 	OrdID   string `json:"ordId"`
@@ -72,6 +78,7 @@ type AmendOrderResponse struct {
 	SMsg    string `json:"sMsg"`
 }
 
+// Order represents an OKX API request or response value.
 type Order struct {
 	AccFillSz         string            `json:"accFillSz"`
 	AlgoClOrdID       *string           `json:"algoClOrdId,omitempty"`
@@ -146,6 +153,7 @@ type AttachAlgoOrderRequest struct {
 	AmendPxOnTriggerType *string `json:"amendPxOnTriggerType,omitempty"`
 }
 
+// AttachAlgoOrder represents an OKX API request or response value.
 type AttachAlgoOrder struct {
 	AttachAlgoClOrdID    string  `json:"attachAlgoClOrdId"`
 	AttachAlgoID         *string `json:"attachAlgoId,omitempty"`
@@ -159,6 +167,7 @@ type AttachAlgoOrder struct {
 	AmendPxOnTriggerType *string `json:"amendPxOnTriggerType,omitempty"`
 }
 
+// Fill represents an OKX API request or response value.
 type Fill struct {
 	InstID   string `json:"instId"`
 	InstType string `json:"instType"`
@@ -180,6 +189,7 @@ type Fill struct {
 	TdMode   string `json:"tdMode"`
 }
 
+// AlgoOrder represents an OKX API request or response value.
 type AlgoOrder struct {
 	ActualPx        string  `json:"actualPx"`
 	ActualSide      string  `json:"actualSide"`
@@ -223,6 +233,7 @@ type AlgoOrder struct {
 	MoveTriggerPx   *string `json:"moveTriggerPx,omitempty"`
 }
 
+// PlaceAlgoOrderRequest represents an OKX API request or response value.
 type PlaceAlgoOrderRequest struct {
 	InstID          string  `json:"instId"`
 	TdMode          string  `json:"tdMode"`
@@ -247,6 +258,7 @@ type PlaceAlgoOrderRequest struct {
 	QuickMgnType    *string `json:"quickMgnType,omitempty"`
 }
 
+// PlaceAlgoOrderResponse represents an OKX API request or response value.
 type PlaceAlgoOrderResponse struct {
 	AlgoID      string `json:"algoId"`
 	AlgoClOrdID string `json:"algoClOrdId"`
@@ -254,12 +266,14 @@ type PlaceAlgoOrderResponse struct {
 	SMsg        string `json:"sMsg"`
 }
 
+// CancelAlgoOrderRequest represents an OKX API request or response value.
 type CancelAlgoOrderRequest struct {
 	AlgoID      *string `json:"algoId,omitempty"`
 	AlgoClOrdID *string `json:"algoClOrdId,omitempty"`
 	InstID      string  `json:"instId"`
 }
 
+// CancelAlgoOrderResponse represents an OKX API request or response value.
 type CancelAlgoOrderResponse struct {
 	AlgoID      string `json:"algoId"`
 	AlgoClOrdID string `json:"algoClOrdId"`
@@ -267,6 +281,7 @@ type CancelAlgoOrderResponse struct {
 	SMsg        string `json:"sMsg"`
 }
 
+// ClosePositionRequest represents an OKX API request or response value.
 type ClosePositionRequest struct {
 	InstID     string  `json:"instId"`
 	MgnMode    string  `json:"mgnMode"`
@@ -277,31 +292,37 @@ type ClosePositionRequest struct {
 	Tag        *string `json:"tag,omitempty"`
 }
 
+// MassCancelRequest represents an OKX API request or response value.
 type MassCancelRequest struct {
 	InstType   string  `json:"instType"`
 	InstFamily *string `json:"instFamily,omitempty"`
 }
 
+// MassCancelResponse represents an OKX API request or response value.
 type MassCancelResponse struct {
 	Result bool   `json:"result"`
 	SCode  string `json:"sCode"`
 	SMsg   string `json:"sMsg"`
 }
 
+// CancelAllAfterRequest represents an OKX API request or response value.
 type CancelAllAfterRequest struct {
 	TimeOut string `json:"timeOut"`
 }
 
+// CancelAllAfterResponse represents an OKX API request or response value.
 type CancelAllAfterResponse struct {
 	TriggerTime string `json:"triggerTime"`
 	TS          string `json:"ts"`
 }
 
+// EasyConvertRequest represents an OKX API request or response value.
 type EasyConvertRequest struct {
 	FromCcy []string `json:"fromCcy"`
 	ToCcy   string   `json:"toCcy"`
 }
 
+// EasyConvertResponse represents an OKX API request or response value.
 type EasyConvertResponse struct {
 	FillFromSz string `json:"fillFromSz"`
 	FillToSz   string `json:"fillToSz"`
@@ -311,11 +332,13 @@ type EasyConvertResponse struct {
 	UTime      string `json:"uTime"`
 }
 
+// OneClickRepayRequest represents an OKX API request or response value.
 type OneClickRepayRequest struct {
 	DebtCcy  []string `json:"debtCcy"`
 	RepayCcy string   `json:"repayCcy"`
 }
 
+// OneClickRepayResponse represents an OKX API request or response value.
 type OneClickRepayResponse struct {
 	DebtCcy     string `json:"debtCcy"`
 	FillDebtSz  string `json:"fillDebtSz"`
