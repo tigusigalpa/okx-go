@@ -8,14 +8,17 @@ import (
 	"github.com/tigusigalpa/okx-go/models"
 )
 
+// Client provides access to the OKX API endpoints in this package.
 type Client struct {
 	doFunc func(ctx context.Context, method, path string, params map[string]string, body interface{}, result interface{}) error
 }
 
+// NewClient creates a client for the API endpoints in this package.
 func NewClient(doFunc func(ctx context.Context, method, path string, params map[string]string, body interface{}, result interface{}) error) *Client {
 	return &Client{doFunc: doFunc}
 }
 
+// GetBalance invokes the corresponding OKX API operation.
 func (c *Client) GetBalance(ctx context.Context, ccy *string) ([]models.Balance, error) {
 	params := make(map[string]string)
 	if ccy != nil {
@@ -29,6 +32,7 @@ func (c *Client) GetBalance(ctx context.Context, ccy *string) ([]models.Balance,
 	return result, nil
 }
 
+// GetPositions invokes the corresponding OKX API operation.
 func (c *Client) GetPositions(ctx context.Context, instType *string, instID *string) ([]models.Position, error) {
 	params := make(map[string]string)
 	if instType != nil {
@@ -45,7 +49,8 @@ func (c *Client) GetPositions(ctx context.Context, instType *string, instID *str
 	return result, nil
 }
 
-func (c *Client) GetPositionsHistory(ctx context.Context, instType *string, instID *string, mgnMode *string, type_ *string, posID *string, after *string, before *string, limit *string) ([]models.PositionHistory, error) {
+// GetPositionsHistory invokes the corresponding OKX API operation.
+func (c *Client) GetPositionsHistory(ctx context.Context, instType *string, instID *string, mgnMode *string, positionType *string, posID *string, after *string, before *string, limit *string) ([]models.PositionHistory, error) {
 	params := make(map[string]string)
 	if instType != nil {
 		params["instType"] = *instType
@@ -56,8 +61,8 @@ func (c *Client) GetPositionsHistory(ctx context.Context, instType *string, inst
 	if mgnMode != nil {
 		params["mgnMode"] = *mgnMode
 	}
-	if type_ != nil {
-		params["type"] = *type_
+	if positionType != nil {
+		params["type"] = *positionType
 	}
 	if posID != nil {
 		params["posId"] = *posID
@@ -79,6 +84,7 @@ func (c *Client) GetPositionsHistory(ctx context.Context, instType *string, inst
 	return result, nil
 }
 
+// GetAccountConfig invokes the corresponding OKX API operation.
 func (c *Client) GetAccountConfig(ctx context.Context) ([]models.AccountConfig, error) {
 	var result []models.AccountConfig
 	if err := c.doFunc(ctx, http.MethodGet, "/api/v5/account/config", nil, nil, &result); err != nil {
@@ -87,6 +93,7 @@ func (c *Client) GetAccountConfig(ctx context.Context) ([]models.AccountConfig, 
 	return result, nil
 }
 
+// SetPositionMode invokes the corresponding OKX API operation.
 func (c *Client) SetPositionMode(ctx context.Context, posMode string) error {
 	body := models.SetPositionModeRequest{
 		PosMode: posMode,
@@ -97,6 +104,7 @@ func (c *Client) SetPositionMode(ctx context.Context, posMode string) error {
 	return nil
 }
 
+// SetLeverage invokes the corresponding OKX API operation.
 func (c *Client) SetLeverage(ctx context.Context, req models.SetLeverageRequest) ([]models.LeverageInfo, error) {
 	var result []models.LeverageInfo
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/account/set-leverage", nil, req, &result); err != nil {
@@ -105,6 +113,7 @@ func (c *Client) SetLeverage(ctx context.Context, req models.SetLeverageRequest)
 	return result, nil
 }
 
+// GetMaxSize invokes the corresponding OKX API operation.
 func (c *Client) GetMaxSize(ctx context.Context, instID string, tdMode string, ccy *string, px *string) ([]models.MaxSize, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -124,6 +133,7 @@ func (c *Client) GetMaxSize(ctx context.Context, instID string, tdMode string, c
 	return result, nil
 }
 
+// GetMaxAvailSize invokes the corresponding OKX API operation.
 func (c *Client) GetMaxAvailSize(ctx context.Context, instID string, tdMode string, ccy *string, reduceOnly *bool, unSpotOffset *bool, quickMgnType *string) ([]models.MaxAvailSize, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -149,6 +159,7 @@ func (c *Client) GetMaxAvailSize(ctx context.Context, instID string, tdMode stri
 	return result, nil
 }
 
+// GetMaxLoan invokes the corresponding OKX API operation.
 func (c *Client) GetMaxLoan(ctx context.Context, instID string, mgnMode string, mgnCcy string) ([]models.MaxLoan, error) {
 	params := map[string]string{
 		"instId":  instID,
@@ -163,6 +174,7 @@ func (c *Client) GetMaxLoan(ctx context.Context, instID string, mgnMode string, 
 	return result, nil
 }
 
+// GetTradeFee invokes the corresponding OKX API operation.
 func (c *Client) GetTradeFee(ctx context.Context, instType string, instID *string, uly *string, category *string, instFamily *string) ([]models.TradeFee, error) {
 	params := map[string]string{
 		"instType": instType,
@@ -187,6 +199,7 @@ func (c *Client) GetTradeFee(ctx context.Context, instType string, instID *strin
 	return result, nil
 }
 
+// GetInterestAccrued invokes the corresponding OKX API operation.
 func (c *Client) GetInterestAccrued(ctx context.Context, instID *string, ccy *string, mgnMode *string, after *string, before *string, limit *string) ([]models.InterestAccrued, error) {
 	params := make(map[string]string)
 	if instID != nil {
@@ -215,6 +228,7 @@ func (c *Client) GetInterestAccrued(ctx context.Context, instID *string, ccy *st
 	return result, nil
 }
 
+// GetInterestRate invokes the corresponding OKX API operation.
 func (c *Client) GetInterestRate(ctx context.Context, ccy *string) ([]models.InterestRate, error) {
 	params := make(map[string]string)
 	if ccy != nil {
@@ -228,6 +242,7 @@ func (c *Client) GetInterestRate(ctx context.Context, ccy *string) ([]models.Int
 	return result, nil
 }
 
+// SetGreeks invokes the corresponding OKX API operation.
 func (c *Client) SetGreeks(ctx context.Context, greeksType string) error {
 	body := models.SetGreeksRequest{
 		GreeksType: greeksType,
@@ -238,6 +253,7 @@ func (c *Client) SetGreeks(ctx context.Context, greeksType string) error {
 	return nil
 }
 
+// GetGreeks invokes the corresponding OKX API operation.
 func (c *Client) GetGreeks(ctx context.Context, ccy *string) ([]models.Greeks, error) {
 	params := make(map[string]string)
 	if ccy != nil {
@@ -251,6 +267,7 @@ func (c *Client) GetGreeks(ctx context.Context, ccy *string) ([]models.Greeks, e
 	return result, nil
 }
 
+// GetMaxWithdrawal invokes the corresponding OKX API operation.
 func (c *Client) GetMaxWithdrawal(ctx context.Context, ccy *string) ([]models.MaxWithdrawal, error) {
 	params := make(map[string]string)
 	if ccy != nil {
@@ -264,6 +281,7 @@ func (c *Client) GetMaxWithdrawal(ctx context.Context, ccy *string) ([]models.Ma
 	return result, nil
 }
 
+// GetRiskState invokes the corresponding OKX API operation.
 func (c *Client) GetRiskState(ctx context.Context) ([]models.RiskState, error) {
 	var result []models.RiskState
 	if err := c.doFunc(ctx, http.MethodGet, "/api/v5/account/risk-state", nil, nil, &result); err != nil {
@@ -272,6 +290,7 @@ func (c *Client) GetRiskState(ctx context.Context) ([]models.RiskState, error) {
 	return result, nil
 }
 
+// BorrowRepay invokes the corresponding OKX API operation.
 func (c *Client) BorrowRepay(ctx context.Context, req models.BorrowRepayRequest) error {
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/account/spot-manual-borrow-repay", nil, req, nil); err != nil {
 		return err
@@ -279,6 +298,7 @@ func (c *Client) BorrowRepay(ctx context.Context, req models.BorrowRepayRequest)
 	return nil
 }
 
+// GetBorrowRepayHistory invokes the corresponding OKX API operation.
 func (c *Client) GetBorrowRepayHistory(ctx context.Context, ccy *string, after *string, before *string, limit *string) ([]models.BorrowRepayHistory, error) {
 	params := make(map[string]string)
 	if ccy != nil {
@@ -301,7 +321,8 @@ func (c *Client) GetBorrowRepayHistory(ctx context.Context, ccy *string, after *
 	return result, nil
 }
 
-func (c *Client) GetBills(ctx context.Context, instType *string, ccy *string, mgnMode *string, ctType *string, type_ *string, subType *string, after *string, before *string, begin *string, end *string, limit *string) ([]models.Bill, error) {
+// GetBills invokes the corresponding OKX API operation.
+func (c *Client) GetBills(ctx context.Context, instType *string, ccy *string, mgnMode *string, ctType *string, billType *string, subType *string, after *string, before *string, begin *string, end *string, limit *string) ([]models.Bill, error) {
 	params := make(map[string]string)
 	if instType != nil {
 		params["instType"] = *instType
@@ -315,8 +336,8 @@ func (c *Client) GetBills(ctx context.Context, instType *string, ccy *string, mg
 	if ctType != nil {
 		params["ctType"] = *ctType
 	}
-	if type_ != nil {
-		params["type"] = *type_
+	if billType != nil {
+		params["type"] = *billType
 	}
 	if subType != nil {
 		params["subType"] = *subType
@@ -344,7 +365,8 @@ func (c *Client) GetBills(ctx context.Context, instType *string, ccy *string, mg
 	return result, nil
 }
 
-func (c *Client) GetBillsHistory(ctx context.Context, instType *string, ccy *string, mgnMode *string, ctType *string, type_ *string, subType *string, after *string, before *string, begin *string, end *string, limit *string) ([]models.Bill, error) {
+// GetBillsHistory invokes the corresponding OKX API operation.
+func (c *Client) GetBillsHistory(ctx context.Context, instType *string, ccy *string, mgnMode *string, ctType *string, billType *string, subType *string, after *string, before *string, begin *string, end *string, limit *string) ([]models.Bill, error) {
 	params := make(map[string]string)
 	if instType != nil {
 		params["instType"] = *instType
@@ -358,8 +380,8 @@ func (c *Client) GetBillsHistory(ctx context.Context, instType *string, ccy *str
 	if ctType != nil {
 		params["ctType"] = *ctType
 	}
-	if type_ != nil {
-		params["type"] = *type_
+	if billType != nil {
+		params["type"] = *billType
 	}
 	if subType != nil {
 		params["subType"] = *subType
@@ -387,6 +409,7 @@ func (c *Client) GetBillsHistory(ctx context.Context, instType *string, ccy *str
 	return result, nil
 }
 
+// GetAccountLevel invokes the corresponding OKX API operation.
 func (c *Client) GetAccountLevel(ctx context.Context) ([]models.AccountLevel, error) {
 	var result []models.AccountLevel
 	if err := c.doFunc(ctx, http.MethodGet, "/api/v5/account/account-level", nil, nil, &result); err != nil {
@@ -395,6 +418,7 @@ func (c *Client) GetAccountLevel(ctx context.Context) ([]models.AccountLevel, er
 	return result, nil
 }
 
+// SetPositionMarginBalance invokes the corresponding OKX API operation.
 func (c *Client) SetPositionMarginBalance(ctx context.Context, req models.PositionMarginBalanceRequest) error {
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/account/position/margin-balance", nil, req, nil); err != nil {
 		return err
@@ -402,6 +426,7 @@ func (c *Client) SetPositionMarginBalance(ctx context.Context, req models.Positi
 	return nil
 }
 
+// GetLeverageInfo invokes the corresponding OKX API operation.
 func (c *Client) GetLeverageInfo(ctx context.Context, instID string, mgnMode string) ([]models.LeverageInfo, error) {
 	params := map[string]string{
 		"instId":  instID,
@@ -415,10 +440,11 @@ func (c *Client) GetLeverageInfo(ctx context.Context, instID string, mgnMode str
 	return result, nil
 }
 
-func (c *Client) GetInterestLimits(ctx context.Context, type_ *string, ccy *string) ([]models.InterestLimits, error) {
+// GetInterestLimits invokes the corresponding OKX API operation.
+func (c *Client) GetInterestLimits(ctx context.Context, interestType *string, ccy *string) ([]models.InterestLimits, error) {
 	params := make(map[string]string)
-	if type_ != nil {
-		params["type"] = *type_
+	if interestType != nil {
+		params["type"] = *interestType
 	}
 	if ccy != nil {
 		params["ccy"] = *ccy
@@ -431,6 +457,7 @@ func (c *Client) GetInterestLimits(ctx context.Context, type_ *string, ccy *stri
 	return result, nil
 }
 
+// GetMMPConfig invokes the corresponding OKX API operation.
 func (c *Client) GetMMPConfig(ctx context.Context, instFamily string) ([]models.MMPConfig, error) {
 	params := map[string]string{
 		"instFamily": instFamily,
@@ -443,6 +470,7 @@ func (c *Client) GetMMPConfig(ctx context.Context, instFamily string) ([]models.
 	return result, nil
 }
 
+// SetMMPConfig invokes the corresponding OKX API operation.
 func (c *Client) SetMMPConfig(ctx context.Context, instFamily, timeInterval, frozenInterval, qtyLimit string) error {
 	body := models.MMPConfig{
 		InstFamily:     instFamily,
@@ -456,6 +484,7 @@ func (c *Client) SetMMPConfig(ctx context.Context, instFamily, timeInterval, fro
 	return nil
 }
 
+// ResetMMPConfig invokes the corresponding OKX API operation.
 func (c *Client) ResetMMPConfig(ctx context.Context, instFamily string) error {
 	body := map[string]string{
 		"instFamily": instFamily,
@@ -466,6 +495,7 @@ func (c *Client) ResetMMPConfig(ctx context.Context, instFamily string) error {
 	return nil
 }
 
+// GetMMPState invokes the corresponding OKX API operation.
 func (c *Client) GetMMPState(ctx context.Context, instFamily string) ([]models.MMPState, error) {
 	params := map[string]string{
 		"instFamily": instFamily,

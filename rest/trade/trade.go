@@ -7,14 +7,17 @@ import (
 	"github.com/tigusigalpa/okx-go/models"
 )
 
+// Client provides access to the OKX API endpoints in this package.
 type Client struct {
 	doFunc func(ctx context.Context, method, path string, params map[string]string, body interface{}, result interface{}) error
 }
 
+// NewClient creates a client for the API endpoints in this package.
 func NewClient(doFunc func(ctx context.Context, method, path string, params map[string]string, body interface{}, result interface{}) error) *Client {
 	return &Client{doFunc: doFunc}
 }
 
+// PlaceOrder invokes the corresponding OKX API operation.
 func (c *Client) PlaceOrder(ctx context.Context, req models.PlaceOrderRequest) ([]models.PlaceOrderResponse, error) {
 	var result []models.PlaceOrderResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/trade/order", nil, req, &result); err != nil {
@@ -23,6 +26,7 @@ func (c *Client) PlaceOrder(ctx context.Context, req models.PlaceOrderRequest) (
 	return result, nil
 }
 
+// PlaceBatchOrders invokes the corresponding OKX API operation.
 func (c *Client) PlaceBatchOrders(ctx context.Context, reqs []models.PlaceOrderRequest) ([]models.PlaceOrderResponse, error) {
 	var result []models.PlaceOrderResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/trade/batch-orders", nil, reqs, &result); err != nil {
@@ -31,6 +35,7 @@ func (c *Client) PlaceBatchOrders(ctx context.Context, reqs []models.PlaceOrderR
 	return result, nil
 }
 
+// CancelOrder invokes the corresponding OKX API operation.
 func (c *Client) CancelOrder(ctx context.Context, req models.CancelOrderRequest) ([]models.CancelOrderResponse, error) {
 	var result []models.CancelOrderResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/trade/cancel-order", nil, req, &result); err != nil {
@@ -39,6 +44,7 @@ func (c *Client) CancelOrder(ctx context.Context, req models.CancelOrderRequest)
 	return result, nil
 }
 
+// CancelBatchOrders invokes the corresponding OKX API operation.
 func (c *Client) CancelBatchOrders(ctx context.Context, reqs []models.CancelOrderRequest) ([]models.CancelOrderResponse, error) {
 	var result []models.CancelOrderResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/trade/cancel-batch-orders", nil, reqs, &result); err != nil {
@@ -47,6 +53,7 @@ func (c *Client) CancelBatchOrders(ctx context.Context, reqs []models.CancelOrde
 	return result, nil
 }
 
+// AmendOrder invokes the corresponding OKX API operation.
 func (c *Client) AmendOrder(ctx context.Context, req models.AmendOrderRequest) ([]models.AmendOrderResponse, error) {
 	var result []models.AmendOrderResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/trade/amend-order", nil, req, &result); err != nil {
@@ -55,6 +62,7 @@ func (c *Client) AmendOrder(ctx context.Context, req models.AmendOrderRequest) (
 	return result, nil
 }
 
+// AmendBatchOrders invokes the corresponding OKX API operation.
 func (c *Client) AmendBatchOrders(ctx context.Context, reqs []models.AmendOrderRequest) ([]models.AmendOrderResponse, error) {
 	var result []models.AmendOrderResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/trade/amend-batch-orders", nil, reqs, &result); err != nil {
@@ -63,6 +71,7 @@ func (c *Client) AmendBatchOrders(ctx context.Context, reqs []models.AmendOrderR
 	return result, nil
 }
 
+// ClosePosition invokes the corresponding OKX API operation.
 func (c *Client) ClosePosition(ctx context.Context, req models.ClosePositionRequest) ([]models.PlaceOrderResponse, error) {
 	var result []models.PlaceOrderResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/trade/close-position", nil, req, &result); err != nil {
@@ -71,6 +80,7 @@ func (c *Client) ClosePosition(ctx context.Context, req models.ClosePositionRequ
 	return result, nil
 }
 
+// GetOrder invokes the corresponding OKX API operation.
 func (c *Client) GetOrder(ctx context.Context, instID string, ordID *string, clOrdID *string) ([]models.Order, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -89,6 +99,7 @@ func (c *Client) GetOrder(ctx context.Context, instID string, ordID *string, clO
 	return result, nil
 }
 
+// GetOrdersPending invokes the corresponding OKX API operation.
 func (c *Client) GetOrdersPending(ctx context.Context, instType *string, uly *string, instFamily *string, instID *string, ordType *string, state *string, after *string, before *string, limit *string) ([]models.Order, error) {
 	params := make(map[string]string)
 	if instType != nil {
@@ -126,6 +137,7 @@ func (c *Client) GetOrdersPending(ctx context.Context, instType *string, uly *st
 	return result, nil
 }
 
+// GetOrdersHistory invokes the corresponding OKX API operation.
 func (c *Client) GetOrdersHistory(ctx context.Context, instType string, uly *string, instFamily *string, instID *string, ordType *string, state *string, category *string, after *string, before *string, begin *string, end *string, limit *string) ([]models.Order, error) {
 	params := map[string]string{
 		"instType": instType,
@@ -171,6 +183,7 @@ func (c *Client) GetOrdersHistory(ctx context.Context, instType string, uly *str
 	return result, nil
 }
 
+// GetOrdersHistoryArchive invokes the corresponding OKX API operation.
 func (c *Client) GetOrdersHistoryArchive(ctx context.Context, instType string, uly *string, instFamily *string, instID *string, ordType *string, state *string, category *string, after *string, before *string, begin *string, end *string, limit *string) ([]models.Order, error) {
 	params := map[string]string{
 		"instType": instType,
@@ -216,6 +229,7 @@ func (c *Client) GetOrdersHistoryArchive(ctx context.Context, instType string, u
 	return result, nil
 }
 
+// GetFills invokes the corresponding OKX API operation.
 func (c *Client) GetFills(ctx context.Context, instType *string, uly *string, instFamily *string, instID *string, ordID *string, after *string, before *string, begin *string, end *string, limit *string) ([]models.Fill, error) {
 	params := make(map[string]string)
 	if instType != nil {
@@ -256,6 +270,7 @@ func (c *Client) GetFills(ctx context.Context, instType *string, uly *string, in
 	return result, nil
 }
 
+// GetFillsHistory invokes the corresponding OKX API operation.
 func (c *Client) GetFillsHistory(ctx context.Context, instType string, uly *string, instFamily *string, instID *string, ordID *string, after *string, before *string, begin *string, end *string, limit *string) ([]models.Fill, error) {
 	params := map[string]string{
 		"instType": instType,
@@ -295,6 +310,7 @@ func (c *Client) GetFillsHistory(ctx context.Context, instType string, uly *stri
 	return result, nil
 }
 
+// PlaceAlgoOrder invokes the corresponding OKX API operation.
 func (c *Client) PlaceAlgoOrder(ctx context.Context, req models.PlaceAlgoOrderRequest) ([]models.PlaceAlgoOrderResponse, error) {
 	var result []models.PlaceAlgoOrderResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/trade/order-algo", nil, req, &result); err != nil {
@@ -303,6 +319,7 @@ func (c *Client) PlaceAlgoOrder(ctx context.Context, req models.PlaceAlgoOrderRe
 	return result, nil
 }
 
+// CancelAlgoOrder invokes the corresponding OKX API operation.
 func (c *Client) CancelAlgoOrder(ctx context.Context, reqs []models.CancelAlgoOrderRequest) ([]models.CancelAlgoOrderResponse, error) {
 	var result []models.CancelAlgoOrderResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/trade/cancel-algos", nil, reqs, &result); err != nil {
@@ -311,6 +328,7 @@ func (c *Client) CancelAlgoOrder(ctx context.Context, reqs []models.CancelAlgoOr
 	return result, nil
 }
 
+// GetAlgoOrdersPending invokes the corresponding OKX API operation.
 func (c *Client) GetAlgoOrdersPending(ctx context.Context, ordType string, algoID *string, instType *string, instID *string, after *string, before *string, limit *string) ([]models.AlgoOrder, error) {
 	params := map[string]string{
 		"ordType": ordType,
@@ -341,6 +359,7 @@ func (c *Client) GetAlgoOrdersPending(ctx context.Context, ordType string, algoI
 	return result, nil
 }
 
+// GetAlgoOrdersHistory invokes the corresponding OKX API operation.
 func (c *Client) GetAlgoOrdersHistory(ctx context.Context, ordType string, state *string, algoID *string, instType *string, instID *string, after *string, before *string, limit *string) ([]models.AlgoOrder, error) {
 	params := map[string]string{
 		"ordType": ordType,
@@ -374,6 +393,7 @@ func (c *Client) GetAlgoOrdersHistory(ctx context.Context, ordType string, state
 	return result, nil
 }
 
+// MassCancel invokes the corresponding OKX API operation.
 func (c *Client) MassCancel(ctx context.Context, req models.MassCancelRequest) ([]models.MassCancelResponse, error) {
 	var result []models.MassCancelResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/trade/mass-cancel", nil, req, &result); err != nil {
@@ -382,6 +402,7 @@ func (c *Client) MassCancel(ctx context.Context, req models.MassCancelRequest) (
 	return result, nil
 }
 
+// CancelAllAfter invokes the corresponding OKX API operation.
 func (c *Client) CancelAllAfter(ctx context.Context, req models.CancelAllAfterRequest) ([]models.CancelAllAfterResponse, error) {
 	var result []models.CancelAllAfterResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/trade/cancel-all-after", nil, req, &result); err != nil {
@@ -390,6 +411,7 @@ func (c *Client) CancelAllAfter(ctx context.Context, req models.CancelAllAfterRe
 	return result, nil
 }
 
+// EasyConvert invokes the corresponding OKX API operation.
 func (c *Client) EasyConvert(ctx context.Context, req models.EasyConvertRequest) ([]models.EasyConvertResponse, error) {
 	var result []models.EasyConvertResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/trade/easy-convert", nil, req, &result); err != nil {
@@ -398,6 +420,7 @@ func (c *Client) EasyConvert(ctx context.Context, req models.EasyConvertRequest)
 	return result, nil
 }
 
+// OneClickRepay invokes the corresponding OKX API operation.
 func (c *Client) OneClickRepay(ctx context.Context, req models.OneClickRepayRequest) ([]models.OneClickRepayResponse, error) {
 	var result []models.OneClickRepayResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/trade/one-click-repay", nil, req, &result); err != nil {

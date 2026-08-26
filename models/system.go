@@ -1,5 +1,6 @@
 package models
 
+// SystemStatus represents an OKX API request or response value.
 type SystemStatus struct {
 	Title       string `json:"title"`
 	State       string `json:"state"`

@@ -5,14 +5,15 @@ import (
 	"fmt"
 )
 
-// OKXError represents an error returned by the OKX API.
-type OKXError struct {
+// Error represents an error returned by the OKX API.
+type Error struct {
 	Code    string
 	Message string
 	Raw     []byte
 }
 
-func (e *OKXError) Error() string {
+// Error returns the formatted API error message.
+func (e *Error) Error() string {
 	return fmt.Sprintf("OKX API error: code=%s, message=%s", e.Code, e.Message)
 }
 

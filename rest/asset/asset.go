@@ -7,14 +7,17 @@ import (
 	"github.com/tigusigalpa/okx-go/models"
 )
 
+// Client provides access to the OKX API endpoints in this package.
 type Client struct {
 	doFunc func(ctx context.Context, method, path string, params map[string]string, body interface{}, result interface{}) error
 }
 
+// NewClient creates a client for the API endpoints in this package.
 func NewClient(doFunc func(ctx context.Context, method, path string, params map[string]string, body interface{}, result interface{}) error) *Client {
 	return &Client{doFunc: doFunc}
 }
 
+// GetCurrencies invokes the corresponding OKX API operation.
 func (c *Client) GetCurrencies(ctx context.Context, ccy *string) ([]models.Currency, error) {
 	params := make(map[string]string)
 	if ccy != nil {
@@ -28,6 +31,7 @@ func (c *Client) GetCurrencies(ctx context.Context, ccy *string) ([]models.Curre
 	return result, nil
 }
 
+// GetBalances invokes the corresponding OKX API operation.
 func (c *Client) GetBalances(ctx context.Context, ccy *string) ([]models.AssetBalance, error) {
 	params := make(map[string]string)
 	if ccy != nil {
@@ -41,6 +45,7 @@ func (c *Client) GetBalances(ctx context.Context, ccy *string) ([]models.AssetBa
 	return result, nil
 }
 
+// GetAssetValuation invokes the corresponding OKX API operation.
 func (c *Client) GetAssetValuation(ctx context.Context, ccy *string) ([]models.AssetValuation, error) {
 	params := make(map[string]string)
 	if ccy != nil {
@@ -54,6 +59,7 @@ func (c *Client) GetAssetValuation(ctx context.Context, ccy *string) ([]models.A
 	return result, nil
 }
 
+// Transfer invokes the corresponding OKX API operation.
 func (c *Client) Transfer(ctx context.Context, req models.TransferRequest) ([]models.TransferResponse, error) {
 	var result []models.TransferResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/asset/transfer", nil, req, &result); err != nil {
@@ -62,7 +68,8 @@ func (c *Client) Transfer(ctx context.Context, req models.TransferRequest) ([]mo
 	return result, nil
 }
 
-func (c *Client) GetTransferState(ctx context.Context, transID *string, clientID *string, type_ *string) ([]models.TransferState, error) {
+// GetTransferState invokes the corresponding OKX API operation.
+func (c *Client) GetTransferState(ctx context.Context, transID *string, clientID *string, transferType *string) ([]models.TransferState, error) {
 	params := make(map[string]string)
 	if transID != nil {
 		params["transId"] = *transID
@@ -70,8 +77,8 @@ func (c *Client) GetTransferState(ctx context.Context, transID *string, clientID
 	if clientID != nil {
 		params["clientId"] = *clientID
 	}
-	if type_ != nil {
-		params["type"] = *type_
+	if transferType != nil {
+		params["type"] = *transferType
 	}
 
 	var result []models.TransferState
@@ -81,6 +88,7 @@ func (c *Client) GetTransferState(ctx context.Context, transID *string, clientID
 	return result, nil
 }
 
+// Withdrawal invokes the corresponding OKX API operation.
 func (c *Client) Withdrawal(ctx context.Context, req models.WithdrawalRequest) ([]models.WithdrawalResponse, error) {
 	var result []models.WithdrawalResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/asset/withdrawal", nil, req, &result); err != nil {
@@ -89,6 +97,7 @@ func (c *Client) Withdrawal(ctx context.Context, req models.WithdrawalRequest) (
 	return result, nil
 }
 
+// CancelWithdrawal invokes the corresponding OKX API operation.
 func (c *Client) CancelWithdrawal(ctx context.Context, wdID string) error {
 	body := map[string]string{
 		"wdId": wdID,
@@ -99,7 +108,8 @@ func (c *Client) CancelWithdrawal(ctx context.Context, wdID string) error {
 	return nil
 }
 
-func (c *Client) GetWithdrawalHistory(ctx context.Context, ccy *string, wdID *string, clientID *string, txID *string, type_ *string, state *string, after *string, before *string, limit *string) ([]models.WithdrawalHistory, error) {
+// GetWithdrawalHistory invokes the corresponding OKX API operation.
+func (c *Client) GetWithdrawalHistory(ctx context.Context, ccy *string, wdID *string, clientID *string, txID *string, withdrawalType *string, state *string, after *string, before *string, limit *string) ([]models.WithdrawalHistory, error) {
 	params := make(map[string]string)
 	if ccy != nil {
 		params["ccy"] = *ccy
@@ -113,8 +123,8 @@ func (c *Client) GetWithdrawalHistory(ctx context.Context, ccy *string, wdID *st
 	if txID != nil {
 		params["txId"] = *txID
 	}
-	if type_ != nil {
-		params["type"] = *type_
+	if withdrawalType != nil {
+		params["type"] = *withdrawalType
 	}
 	if state != nil {
 		params["state"] = *state
@@ -136,6 +146,7 @@ func (c *Client) GetWithdrawalHistory(ctx context.Context, ccy *string, wdID *st
 	return result, nil
 }
 
+// GetDepositAddress invokes the corresponding OKX API operation.
 func (c *Client) GetDepositAddress(ctx context.Context, ccy string) ([]models.DepositAddress, error) {
 	params := map[string]string{
 		"ccy": ccy,
@@ -148,7 +159,8 @@ func (c *Client) GetDepositAddress(ctx context.Context, ccy string) ([]models.De
 	return result, nil
 }
 
-func (c *Client) GetDepositHistory(ctx context.Context, ccy *string, depID *string, fromWdID *string, txID *string, type_ *string, state *string, after *string, before *string, limit *string) ([]models.DepositHistory, error) {
+// GetDepositHistory invokes the corresponding OKX API operation.
+func (c *Client) GetDepositHistory(ctx context.Context, ccy *string, depID *string, fromWdID *string, txID *string, depositType *string, state *string, after *string, before *string, limit *string) ([]models.DepositHistory, error) {
 	params := make(map[string]string)
 	if ccy != nil {
 		params["ccy"] = *ccy
@@ -162,8 +174,8 @@ func (c *Client) GetDepositHistory(ctx context.Context, ccy *string, depID *stri
 	if txID != nil {
 		params["txId"] = *txID
 	}
-	if type_ != nil {
-		params["type"] = *type_
+	if depositType != nil {
+		params["type"] = *depositType
 	}
 	if state != nil {
 		params["state"] = *state
@@ -185,13 +197,14 @@ func (c *Client) GetDepositHistory(ctx context.Context, ccy *string, depID *stri
 	return result, nil
 }
 
-func (c *Client) GetBills(ctx context.Context, ccy *string, type_ *string, clientID *string, after *string, before *string, limit *string) ([]models.AssetBill, error) {
+// GetBills invokes the corresponding OKX API operation.
+func (c *Client) GetBills(ctx context.Context, ccy *string, billType *string, clientID *string, after *string, before *string, limit *string) ([]models.AssetBill, error) {
 	params := make(map[string]string)
 	if ccy != nil {
 		params["ccy"] = *ccy
 	}
-	if type_ != nil {
-		params["type"] = *type_
+	if billType != nil {
+		params["type"] = *billType
 	}
 	if clientID != nil {
 		params["clientId"] = *clientID
@@ -213,6 +226,7 @@ func (c *Client) GetBills(ctx context.Context, ccy *string, type_ *string, clien
 	return result, nil
 }
 
+// GetSavingBalance invokes the corresponding OKX API operation.
 func (c *Client) GetSavingBalance(ctx context.Context, ccy *string) ([]models.SavingBalance, error) {
 	params := make(map[string]string)
 	if ccy != nil {
@@ -226,6 +240,7 @@ func (c *Client) GetSavingBalance(ctx context.Context, ccy *string) ([]models.Sa
 	return result, nil
 }
 
+// PurchaseRedempt invokes the corresponding OKX API operation.
 func (c *Client) PurchaseRedempt(ctx context.Context, req models.PurchaseRedemptRequest) ([]models.PurchaseRedemptResponse, error) {
 	var result []models.PurchaseRedemptResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/asset/purchase-redempt", nil, req, &result); err != nil {
@@ -234,6 +249,7 @@ func (c *Client) PurchaseRedempt(ctx context.Context, req models.PurchaseRedempt
 	return result, nil
 }
 
+// SetLendingRate invokes the corresponding OKX API operation.
 func (c *Client) SetLendingRate(ctx context.Context, ccy string, rate string) ([]models.LendingRate, error) {
 	body := map[string]string{
 		"ccy":  ccy,
@@ -247,6 +263,7 @@ func (c *Client) SetLendingRate(ctx context.Context, ccy string, rate string) ([
 	return result, nil
 }
 
+// GetLendingRateSummary invokes the corresponding OKX API operation.
 func (c *Client) GetLendingRateSummary(ctx context.Context, ccy *string) ([]models.LendingRate, error) {
 	params := make(map[string]string)
 	if ccy != nil {
@@ -260,6 +277,7 @@ func (c *Client) GetLendingRateSummary(ctx context.Context, ccy *string) ([]mode
 	return result, nil
 }
 
+// GetLendingRateHistory invokes the corresponding OKX API operation.
 func (c *Client) GetLendingRateHistory(ctx context.Context, ccy *string, after *string, before *string, limit *string) ([]models.LendingRate, error) {
 	params := make(map[string]string)
 	if ccy != nil {
@@ -282,6 +300,7 @@ func (c *Client) GetLendingRateHistory(ctx context.Context, ccy *string, after *
 	return result, nil
 }
 
+// GetConvertCurrencies invokes the corresponding OKX API operation.
 func (c *Client) GetConvertCurrencies(ctx context.Context) ([]models.ConvertCurrencyPair, error) {
 	var result []models.ConvertCurrencyPair
 	if err := c.doFunc(ctx, http.MethodGet, "/api/v5/asset/convert/currencies", nil, nil, &result); err != nil {
@@ -290,6 +309,7 @@ func (c *Client) GetConvertCurrencies(ctx context.Context) ([]models.ConvertCurr
 	return result, nil
 }
 
+// GetConvertCurrencyPair invokes the corresponding OKX API operation.
 func (c *Client) GetConvertCurrencyPair(ctx context.Context, fromCcy string, toCcy string) ([]models.ConvertCurrencyPair, error) {
 	params := map[string]string{
 		"fromCcy": fromCcy,
@@ -303,6 +323,7 @@ func (c *Client) GetConvertCurrencyPair(ctx context.Context, fromCcy string, toC
 	return result, nil
 }
 
+// EstimateConvertQuote invokes the corresponding OKX API operation.
 func (c *Client) EstimateConvertQuote(ctx context.Context, req models.ConvertEstimateQuoteRequest) ([]models.ConvertEstimateQuoteResponse, error) {
 	var result []models.ConvertEstimateQuoteResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/asset/convert/estimate-quote", nil, req, &result); err != nil {
@@ -311,6 +332,7 @@ func (c *Client) EstimateConvertQuote(ctx context.Context, req models.ConvertEst
 	return result, nil
 }
 
+// ConvertTrade invokes the corresponding OKX API operation.
 func (c *Client) ConvertTrade(ctx context.Context, req models.ConvertTradeRequest) ([]models.ConvertTradeResponse, error) {
 	var result []models.ConvertTradeResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/asset/convert/trade", nil, req, &result); err != nil {
@@ -319,6 +341,7 @@ func (c *Client) ConvertTrade(ctx context.Context, req models.ConvertTradeReques
 	return result, nil
 }
 
+// GetConvertHistory invokes the corresponding OKX API operation.
 func (c *Client) GetConvertHistory(ctx context.Context, after *string, before *string, limit *string, tag *string) ([]models.ConvertTradeResponse, error) {
 	params := make(map[string]string)
 	if after != nil {
@@ -341,6 +364,7 @@ func (c *Client) GetConvertHistory(ctx context.Context, after *string, before *s
 	return result, nil
 }
 
+// GetMonthlyStatement invokes the corresponding OKX API operation.
 func (c *Client) GetMonthlyStatement(ctx context.Context, month *string) ([]models.MonthlyStatement, error) {
 	params := make(map[string]string)
 	if month != nil {

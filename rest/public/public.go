@@ -7,14 +7,17 @@ import (
 	"github.com/tigusigalpa/okx-go/models"
 )
 
+// Client provides access to the OKX API endpoints in this package.
 type Client struct {
 	doPublicFunc func(ctx context.Context, method, path string, params map[string]string, result interface{}) error
 }
 
+// NewClient creates a client for the API endpoints in this package.
 func NewClient(doPublicFunc func(ctx context.Context, method, path string, params map[string]string, result interface{}) error) *Client {
 	return &Client{doPublicFunc: doPublicFunc}
 }
 
+// GetInstruments invokes the corresponding OKX API operation.
 func (c *Client) GetInstruments(ctx context.Context, instType string, uly *string, instFamily *string, instID *string) ([]models.Instrument, error) {
 	params := map[string]string{
 		"instType": instType,
@@ -36,6 +39,7 @@ func (c *Client) GetInstruments(ctx context.Context, instType string, uly *strin
 	return result, nil
 }
 
+// GetDeliveryExerciseHistory invokes the corresponding OKX API operation.
 func (c *Client) GetDeliveryExerciseHistory(ctx context.Context, instType string, uly *string, after *string, before *string, limit *string) ([]models.DeliveryExerciseHistory, error) {
 	params := map[string]string{
 		"instType": instType,
@@ -60,6 +64,7 @@ func (c *Client) GetDeliveryExerciseHistory(ctx context.Context, instType string
 	return result, nil
 }
 
+// GetOpenInterest invokes the corresponding OKX API operation.
 func (c *Client) GetOpenInterest(ctx context.Context, instType string, uly *string, instFamily *string, instID *string) ([]models.OpenInterest, error) {
 	params := map[string]string{
 		"instType": instType,
@@ -81,6 +86,7 @@ func (c *Client) GetOpenInterest(ctx context.Context, instType string, uly *stri
 	return result, nil
 }
 
+// GetFundingRate invokes the corresponding OKX API operation.
 func (c *Client) GetFundingRate(ctx context.Context, instID string) ([]models.FundingRate, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -93,6 +99,7 @@ func (c *Client) GetFundingRate(ctx context.Context, instID string) ([]models.Fu
 	return result, nil
 }
 
+// GetFundingRateHistory invokes the corresponding OKX API operation.
 func (c *Client) GetFundingRateHistory(ctx context.Context, instID string, after *string, before *string, limit *string) ([]models.FundingRateHistory, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -114,6 +121,7 @@ func (c *Client) GetFundingRateHistory(ctx context.Context, instID string, after
 	return result, nil
 }
 
+// GetPriceLimit invokes the corresponding OKX API operation.
 func (c *Client) GetPriceLimit(ctx context.Context, instID string) ([]models.PriceLimit, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -126,6 +134,7 @@ func (c *Client) GetPriceLimit(ctx context.Context, instID string) ([]models.Pri
 	return result, nil
 }
 
+// GetOptionSummary invokes the corresponding OKX API operation.
 func (c *Client) GetOptionSummary(ctx context.Context, uly string, expTime *string) ([]models.OptionSummary, error) {
 	params := map[string]string{
 		"uly": uly,
@@ -141,6 +150,7 @@ func (c *Client) GetOptionSummary(ctx context.Context, uly string, expTime *stri
 	return result, nil
 }
 
+// GetEstimatedPrice invokes the corresponding OKX API operation.
 func (c *Client) GetEstimatedPrice(ctx context.Context, instID string) ([]models.EstimatedPrice, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -153,6 +163,7 @@ func (c *Client) GetEstimatedPrice(ctx context.Context, instID string) ([]models
 	return result, nil
 }
 
+// GetDiscountRateInterestFreeQuota invokes the corresponding OKX API operation.
 func (c *Client) GetDiscountRateInterestFreeQuota(ctx context.Context, ccy *string) ([]models.DiscountRateInterestFreeQuota, error) {
 	params := make(map[string]string)
 	if ccy != nil {
@@ -166,6 +177,7 @@ func (c *Client) GetDiscountRateInterestFreeQuota(ctx context.Context, ccy *stri
 	return result, nil
 }
 
+// GetSystemTime invokes the corresponding OKX API operation.
 func (c *Client) GetSystemTime(ctx context.Context) ([]models.SystemTime, error) {
 	var result []models.SystemTime
 	if err := c.doPublicFunc(ctx, http.MethodGet, "/api/v5/public/time", nil, &result); err != nil {
@@ -174,6 +186,7 @@ func (c *Client) GetSystemTime(ctx context.Context) ([]models.SystemTime, error)
 	return result, nil
 }
 
+// GetLiquidationOrders invokes the corresponding OKX API operation.
 func (c *Client) GetLiquidationOrders(ctx context.Context, instType string, mgnMode *string, instID *string, ccy *string, uly *string, alias *string, state *string, before *string, after *string, limit *string) ([]models.LiquidationOrder, error) {
 	params := map[string]string{
 		"instType": instType,
@@ -213,6 +226,7 @@ func (c *Client) GetLiquidationOrders(ctx context.Context, instType string, mgnM
 	return result, nil
 }
 
+// GetMarkPrice invokes the corresponding OKX API operation.
 func (c *Client) GetMarkPrice(ctx context.Context, instType string, uly *string, instFamily *string, instID *string) ([]models.MarkPrice, error) {
 	params := map[string]string{
 		"instType": instType,
@@ -234,6 +248,7 @@ func (c *Client) GetMarkPrice(ctx context.Context, instType string, uly *string,
 	return result, nil
 }
 
+// GetPositionTiers invokes the corresponding OKX API operation.
 func (c *Client) GetPositionTiers(ctx context.Context, instType string, tdMode string, uly *string, instFamily *string, instID *string, ccy *string, tier *string) ([]models.PositionTier, error) {
 	params := map[string]string{
 		"instType": instType,
@@ -262,6 +277,7 @@ func (c *Client) GetPositionTiers(ctx context.Context, instType string, tdMode s
 	return result, nil
 }
 
+// GetInterestRateLoanQuota invokes the corresponding OKX API operation.
 func (c *Client) GetInterestRateLoanQuota(ctx context.Context) ([]models.InterestRateLoanQuota, error) {
 	var result []models.InterestRateLoanQuota
 	if err := c.doPublicFunc(ctx, http.MethodGet, "/api/v5/public/interest-rate-loan-quota", nil, &result); err != nil {
@@ -270,6 +286,7 @@ func (c *Client) GetInterestRateLoanQuota(ctx context.Context) ([]models.Interes
 	return result, nil
 }
 
+// GetVIPInterestRateLoanQuota invokes the corresponding OKX API operation.
 func (c *Client) GetVIPInterestRateLoanQuota(ctx context.Context) ([]models.VIPInterestRateLoanQuota, error) {
 	var result []models.VIPInterestRateLoanQuota
 	if err := c.doPublicFunc(ctx, http.MethodGet, "/api/v5/public/vip-interest-rate-loan-quota", nil, &result); err != nil {
@@ -278,6 +295,7 @@ func (c *Client) GetVIPInterestRateLoanQuota(ctx context.Context) ([]models.VIPI
 	return result, nil
 }
 
+// GetUnderlying invokes the corresponding OKX API operation.
 func (c *Client) GetUnderlying(ctx context.Context, instType string) ([]models.Underlying, error) {
 	params := map[string]string{
 		"instType": instType,
@@ -290,12 +308,13 @@ func (c *Client) GetUnderlying(ctx context.Context, instType string) ([]models.U
 	return result, nil
 }
 
-func (c *Client) GetInsuranceFund(ctx context.Context, instType string, type_ *string, uly *string, ccy *string, before *string, after *string, limit *string) ([]models.InsuranceFund, error) {
+// GetInsuranceFund invokes the corresponding OKX API operation.
+func (c *Client) GetInsuranceFund(ctx context.Context, instType string, fundType *string, uly *string, ccy *string, before *string, after *string, limit *string) ([]models.InsuranceFund, error) {
 	params := map[string]string{
 		"instType": instType,
 	}
-	if type_ != nil {
-		params["type"] = *type_
+	if fundType != nil {
+		params["type"] = *fundType
 	}
 	if uly != nil {
 		params["uly"] = *uly
@@ -320,7 +339,8 @@ func (c *Client) GetInsuranceFund(ctx context.Context, instType string, type_ *s
 	return result, nil
 }
 
-func (c *Client) ConvertContractCoin(ctx context.Context, instID string, sz string, px *string, type_ *string, unit *string) ([]models.UnitConvert, error) {
+// ConvertContractCoin invokes the corresponding OKX API operation.
+func (c *Client) ConvertContractCoin(ctx context.Context, instID string, sz string, px *string, conversionType *string, unit *string) ([]models.UnitConvert, error) {
 	params := map[string]string{
 		"instId": instID,
 		"sz":     sz,
@@ -328,8 +348,8 @@ func (c *Client) ConvertContractCoin(ctx context.Context, instID string, sz stri
 	if px != nil {
 		params["px"] = *px
 	}
-	if type_ != nil {
-		params["type"] = *type_
+	if conversionType != nil {
+		params["type"] = *conversionType
 	}
 	if unit != nil {
 		params["unit"] = *unit
@@ -342,6 +362,7 @@ func (c *Client) ConvertContractCoin(ctx context.Context, instID string, sz stri
 	return result, nil
 }
 
+// GetEconomicCalendar invokes the corresponding OKX API operation.
 func (c *Client) GetEconomicCalendar(ctx context.Context, region *string, importance *string, before *string, after *string, limit *string) ([]models.EconomicCalendar, error) {
 	params := make(map[string]string)
 	if region != nil {

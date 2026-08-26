@@ -7,14 +7,17 @@ import (
 	"github.com/tigusigalpa/okx-go/models"
 )
 
+// Client provides access to the OKX API endpoints in this package.
 type Client struct {
 	doPublicFunc func(ctx context.Context, method, path string, params map[string]string, result interface{}) error
 }
 
+// NewClient creates a client for the API endpoints in this package.
 func NewClient(doPublicFunc func(ctx context.Context, method, path string, params map[string]string, result interface{}) error) *Client {
 	return &Client{doPublicFunc: doPublicFunc}
 }
 
+// GetTickers invokes the corresponding OKX API operation.
 func (c *Client) GetTickers(ctx context.Context, instType string, uly *string, instFamily *string) ([]models.Ticker, error) {
 	params := map[string]string{
 		"instType": instType,
@@ -33,6 +36,7 @@ func (c *Client) GetTickers(ctx context.Context, instType string, uly *string, i
 	return result, nil
 }
 
+// GetTicker invokes the corresponding OKX API operation.
 func (c *Client) GetTicker(ctx context.Context, instID string) ([]models.Ticker, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -45,6 +49,7 @@ func (c *Client) GetTicker(ctx context.Context, instID string) ([]models.Ticker,
 	return result, nil
 }
 
+// GetIndexTickers invokes the corresponding OKX API operation.
 func (c *Client) GetIndexTickers(ctx context.Context, quoteCcy *string, instID *string) ([]models.IndexTicker, error) {
 	params := make(map[string]string)
 	if quoteCcy != nil {
@@ -61,6 +66,7 @@ func (c *Client) GetIndexTickers(ctx context.Context, quoteCcy *string, instID *
 	return result, nil
 }
 
+// GetOrderBook invokes the corresponding OKX API operation.
 func (c *Client) GetOrderBook(ctx context.Context, instID string, sz *string) ([]models.OrderBook, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -76,6 +82,7 @@ func (c *Client) GetOrderBook(ctx context.Context, instID string, sz *string) ([
 	return result, nil
 }
 
+// GetOrderBookFull invokes the corresponding OKX API operation.
 func (c *Client) GetOrderBookFull(ctx context.Context, instID string, sz *string) ([]models.OrderBook, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -91,6 +98,7 @@ func (c *Client) GetOrderBookFull(ctx context.Context, instID string, sz *string
 	return result, nil
 }
 
+// GetOrderBookLite invokes the corresponding OKX API operation.
 func (c *Client) GetOrderBookLite(ctx context.Context, instID string) ([]models.OrderBook, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -103,6 +111,7 @@ func (c *Client) GetOrderBookLite(ctx context.Context, instID string) ([]models.
 	return result, nil
 }
 
+// GetCandles invokes the corresponding OKX API operation.
 func (c *Client) GetCandles(ctx context.Context, instID string, bar *string, after *string, before *string, limit *string) ([]models.Candle, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -127,6 +136,7 @@ func (c *Client) GetCandles(ctx context.Context, instID string, bar *string, aft
 	return result, nil
 }
 
+// GetHistoryCandles invokes the corresponding OKX API operation.
 func (c *Client) GetHistoryCandles(ctx context.Context, instID string, bar *string, after *string, before *string, limit *string) ([]models.Candle, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -151,6 +161,7 @@ func (c *Client) GetHistoryCandles(ctx context.Context, instID string, bar *stri
 	return result, nil
 }
 
+// GetIndexCandles invokes the corresponding OKX API operation.
 func (c *Client) GetIndexCandles(ctx context.Context, instID string, bar *string, after *string, before *string, limit *string) ([]models.Candle, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -175,6 +186,7 @@ func (c *Client) GetIndexCandles(ctx context.Context, instID string, bar *string
 	return result, nil
 }
 
+// GetHistoryIndexCandles invokes the corresponding OKX API operation.
 func (c *Client) GetHistoryIndexCandles(ctx context.Context, instID string, bar *string, after *string, before *string, limit *string) ([]models.Candle, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -199,6 +211,7 @@ func (c *Client) GetHistoryIndexCandles(ctx context.Context, instID string, bar 
 	return result, nil
 }
 
+// GetMarkPriceCandles invokes the corresponding OKX API operation.
 func (c *Client) GetMarkPriceCandles(ctx context.Context, instID string, bar *string, after *string, before *string, limit *string) ([]models.Candle, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -223,6 +236,7 @@ func (c *Client) GetMarkPriceCandles(ctx context.Context, instID string, bar *st
 	return result, nil
 }
 
+// GetHistoryMarkPriceCandles invokes the corresponding OKX API operation.
 func (c *Client) GetHistoryMarkPriceCandles(ctx context.Context, instID string, bar *string, after *string, before *string, limit *string) ([]models.Candle, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -247,6 +261,7 @@ func (c *Client) GetHistoryMarkPriceCandles(ctx context.Context, instID string, 
 	return result, nil
 }
 
+// GetTrades invokes the corresponding OKX API operation.
 func (c *Client) GetTrades(ctx context.Context, instID string, limit *string) ([]models.Trade, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -262,12 +277,13 @@ func (c *Client) GetTrades(ctx context.Context, instID string, limit *string) ([
 	return result, nil
 }
 
-func (c *Client) GetHistoryTrades(ctx context.Context, instID string, type_ *string, after *string, before *string, limit *string) ([]models.Trade, error) {
+// GetHistoryTrades invokes the corresponding OKX API operation.
+func (c *Client) GetHistoryTrades(ctx context.Context, instID string, tradeType *string, after *string, before *string, limit *string) ([]models.Trade, error) {
 	params := map[string]string{
 		"instId": instID,
 	}
-	if type_ != nil {
-		params["type"] = *type_
+	if tradeType != nil {
+		params["type"] = *tradeType
 	}
 	if after != nil {
 		params["after"] = *after
@@ -286,6 +302,7 @@ func (c *Client) GetHistoryTrades(ctx context.Context, instID string, type_ *str
 	return result, nil
 }
 
+// Get24hVolume invokes the corresponding OKX API operation.
 func (c *Client) Get24hVolume(ctx context.Context) ([]models.Platform24Volume, error) {
 	var result []models.Platform24Volume
 	if err := c.doPublicFunc(ctx, http.MethodGet, "/api/v5/market/platform-24-volume", nil, &result); err != nil {
@@ -294,6 +311,7 @@ func (c *Client) Get24hVolume(ctx context.Context) ([]models.Platform24Volume, e
 	return result, nil
 }
 
+// GetOpenOracle invokes the corresponding OKX API operation.
 func (c *Client) GetOpenOracle(ctx context.Context) ([]models.OpenOracle, error) {
 	var result []models.OpenOracle
 	if err := c.doPublicFunc(ctx, http.MethodGet, "/api/v5/market/open-oracle", nil, &result); err != nil {
@@ -302,6 +320,7 @@ func (c *Client) GetOpenOracle(ctx context.Context) ([]models.OpenOracle, error)
 	return result, nil
 }
 
+// GetExchangeRate invokes the corresponding OKX API operation.
 func (c *Client) GetExchangeRate(ctx context.Context) ([]models.ExchangeRate, error) {
 	var result []models.ExchangeRate
 	if err := c.doPublicFunc(ctx, http.MethodGet, "/api/v5/market/exchange-rate", nil, &result); err != nil {
@@ -310,6 +329,7 @@ func (c *Client) GetExchangeRate(ctx context.Context) ([]models.ExchangeRate, er
 	return result, nil
 }
 
+// GetIndexComponents invokes the corresponding OKX API operation.
 func (c *Client) GetIndexComponents(ctx context.Context, index string) ([]models.IndexComponents, error) {
 	params := map[string]string{
 		"index": index,
@@ -322,6 +342,7 @@ func (c *Client) GetIndexComponents(ctx context.Context, index string) ([]models
 	return result, nil
 }
 
+// GetBlockTicker invokes the corresponding OKX API operation.
 func (c *Client) GetBlockTicker(ctx context.Context, instID string) ([]models.BlockTicker, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -334,6 +355,7 @@ func (c *Client) GetBlockTicker(ctx context.Context, instID string) ([]models.Bl
 	return result, nil
 }
 
+// GetBlockTrades invokes the corresponding OKX API operation.
 func (c *Client) GetBlockTrades(ctx context.Context, instID string) ([]models.BlockTrade, error) {
 	params := map[string]string{
 		"instId": instID,
@@ -346,6 +368,7 @@ func (c *Client) GetBlockTrades(ctx context.Context, instID string) ([]models.Bl
 	return result, nil
 }
 
+// GetUnderlying invokes the corresponding OKX API operation.
 func (c *Client) GetUnderlying(ctx context.Context, instType string) ([]models.Underlying, error) {
 	params := map[string]string{
 		"instType": instType,

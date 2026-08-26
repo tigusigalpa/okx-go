@@ -65,9 +65,16 @@ type Logger interface {
 // noopLogger is a no-op logger implementation.
 type noopLogger struct{}
 
+// Debug invokes the corresponding OKX API operation.
 func (n *noopLogger) Debug(msg string, args ...any) {}
-func (n *noopLogger) Info(msg string, args ...any)  {}
-func (n *noopLogger) Warn(msg string, args ...any)  {}
+
+// Info invokes the corresponding OKX API operation.
+func (n *noopLogger) Info(msg string, args ...any) {}
+
+// Warn invokes the corresponding OKX API operation.
+func (n *noopLogger) Warn(msg string, args ...any) {}
+
+// Error invokes the corresponding OKX API operation.
 func (n *noopLogger) Error(msg string, args ...any) {}
 
 // slogLogger wraps slog.Logger to implement the Logger interface.
@@ -75,18 +82,22 @@ type slogLogger struct {
 	logger *slog.Logger
 }
 
+// Debug invokes the corresponding OKX API operation.
 func (s *slogLogger) Debug(msg string, args ...any) {
 	s.logger.Debug(msg, args...)
 }
 
+// Info invokes the corresponding OKX API operation.
 func (s *slogLogger) Info(msg string, args ...any) {
 	s.logger.Info(msg, args...)
 }
 
+// Warn invokes the corresponding OKX API operation.
 func (s *slogLogger) Warn(msg string, args ...any) {
 	s.logger.Warn(msg, args...)
 }
 
+// Error invokes the corresponding OKX API operation.
 func (s *slogLogger) Error(msg string, args ...any) {
 	s.logger.Error(msg, args...)
 }

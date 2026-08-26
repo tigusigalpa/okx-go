@@ -11,6 +11,7 @@ import (
 	"github.com/tigusigalpa/okx-go/rest/users"
 )
 
+// RestClient provides access to grouped OKX REST API clients.
 type RestClient struct {
 	*Client
 	Account *account.Client
@@ -23,6 +24,7 @@ type RestClient struct {
 	Users   *users.Client
 }
 
+// NewRestClient creates a REST API client with the provided credentials and options.
 func NewRestClient(apiKey, secretKey, passphrase string, opts ...Option) *RestClient {
 	client := NewClient(apiKey, secretKey, passphrase, opts...)
 

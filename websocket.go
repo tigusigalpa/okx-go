@@ -16,14 +16,21 @@ import (
 )
 
 const (
-	// WebSocket URLs
-	WSPublicURL        = "wss://ws.okx.com:8443/ws/v5/public"
-	WSPrivateURL       = "wss://ws.okx.com:8443/ws/v5/private"
-	WSBusinessURL      = "wss://ws.okx.com:8443/ws/v5/business"
-	WSPublicSBEURL     = "wss://ws.okx.com:8443/ws/v5/public-sbe"
-	WSDemoPublicURL    = "wss://wspap.okx.com:8443/ws/v5/public"
-	WSDemoPrivateURL   = "wss://wspap.okx.com:8443/ws/v5/private"
-	WSDemoBusinessURL  = "wss://wspap.okx.com:8443/ws/v5/business"
+	// WSPublicURL is the production WebSocket endpoint for public channels.
+	WSPublicURL = "wss://ws.okx.com:8443/ws/v5/public"
+	// WSPrivateURL is the production WebSocket endpoint for private channels.
+	WSPrivateURL = "wss://ws.okx.com:8443/ws/v5/private"
+	// WSBusinessURL is the production WebSocket endpoint for business channels.
+	WSBusinessURL = "wss://ws.okx.com:8443/ws/v5/business"
+	// WSPublicSBEURL is the production WebSocket endpoint for public SBE channels.
+	WSPublicSBEURL = "wss://ws.okx.com:8443/ws/v5/public-sbe"
+	// WSDemoPublicURL is the demo WebSocket endpoint for public channels.
+	WSDemoPublicURL = "wss://wspap.okx.com:8443/ws/v5/public"
+	// WSDemoPrivateURL is the demo WebSocket endpoint for private channels.
+	WSDemoPrivateURL = "wss://wspap.okx.com:8443/ws/v5/private"
+	// WSDemoBusinessURL is the demo WebSocket endpoint for business channels.
+	WSDemoBusinessURL = "wss://wspap.okx.com:8443/ws/v5/business"
+	// WSDemoPublicSBEURL is the demo WebSocket endpoint for public SBE channels.
 	WSDemoPublicSBEURL = "wss://wspap.okx.com:8443/ws/v5/public-sbe"
 
 	pingInterval = 25 * time.Second
@@ -32,6 +39,7 @@ const (
 	readTimeout  = 60 * time.Second
 )
 
+// WSClient manages an OKX WebSocket connection and its subscriptions.
 type WSClient struct {
 	apiKey     string
 	secretKey  string
@@ -56,20 +64,24 @@ type subscription struct {
 	messages chan []byte
 }
 
+// WSOption configures a WSClient.
 type WSOption func(*WSClient)
 
+// WithWSDemo routes standard production endpoints to their demo equivalents.
 func WithWSDemo() WSOption {
 	return func(ws *WSClient) {
 		ws.isDemo = true
 	}
 }
 
+// WithWSLogger sets the logger used by a WSClient.
 func WithWSLogger(logger Logger) WSOption {
 	return func(ws *WSClient) {
 		ws.logger = logger
 	}
 }
 
+// NewWSClient creates a WebSocket client with the provided credentials and endpoint.
 func NewWSClient(apiKey, secretKey, passphrase, url string, opts ...WSOption) *WSClient {
 	ws := &WSClient{
 		apiKey:        apiKey,
@@ -107,6 +119,7 @@ func demoWebSocketURL(url string) string {
 	}
 }
 
+// Connect establishes the WebSocket connection and starts background pumps.
 func (ws *WSClient) Connect(ctx context.Context) error {
 	return ws.connect(ctx, true)
 }
@@ -132,6 +145,7 @@ func (ws *WSClient) connect(ctx context.Context, startPingPump bool) error {
 	return nil
 }
 
+// Login authenticates the WebSocket client using its configured credentials.
 func (ws *WSClient) Login(ctx context.Context) error {
 	timestamp := fmt.Sprintf("%d", time.Now().Unix())
 	message := timestamp + "GET" + "/users/self/verify"
@@ -164,6 +178,7 @@ func (ws *WSClient) Login(ctx context.Context) error {
 	return nil
 }
 
+// Subscribe subscribes to a channel and returns its message stream.
 func (ws *WSClient) Subscribe(ctx context.Context, channel string, args map[string]interface{}) (<-chan []byte, error) {
 	subKey := ws.makeSubKey(channel, args)
 
@@ -205,6 +220,7 @@ func (ws *WSClient) Subscribe(ctx context.Context, channel string, args map[stri
 	return ch, nil
 }
 
+// Unsubscribe removes a subscription from a channel.
 func (ws *WSClient) Unsubscribe(channel string, args map[string]interface{}) error {
 	subKey := ws.makeSubKey(channel, args)
 
@@ -238,6 +254,7 @@ func (ws *WSClient) Unsubscribe(channel string, args map[string]interface{}) err
 	return nil
 }
 
+// Close stops background activity, closes subscriptions, and closes the connection.
 func (ws *WSClient) Close() error {
 	var closeErr error
 	ws.closeOnce.Do(func() {

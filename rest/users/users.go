@@ -7,14 +7,17 @@ import (
 	"github.com/tigusigalpa/okx-go/models"
 )
 
+// Client provides access to the OKX API endpoints in this package.
 type Client struct {
 	doFunc func(ctx context.Context, method, path string, params map[string]string, body interface{}, result interface{}) error
 }
 
+// NewClient creates a client for the API endpoints in this package.
 func NewClient(doFunc func(ctx context.Context, method, path string, params map[string]string, body interface{}, result interface{}) error) *Client {
 	return &Client{doFunc: doFunc}
 }
 
+// GetSubAccountList invokes the corresponding OKX API operation.
 func (c *Client) GetSubAccountList(ctx context.Context, enable *bool, subAcct *string, after *string, before *string, limit *string) ([]models.SubAccount, error) {
 	params := make(map[string]string)
 	if enable != nil {
@@ -44,6 +47,7 @@ func (c *Client) GetSubAccountList(ctx context.Context, enable *bool, subAcct *s
 	return result, nil
 }
 
+// CreateSubAccount invokes the corresponding OKX API operation.
 func (c *Client) CreateSubAccount(ctx context.Context, req models.CreateSubAccountRequest) ([]models.CreateSubAccountResponse, error) {
 	var result []models.CreateSubAccountResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/users/subaccount/create-subaccount", nil, req, &result); err != nil {
@@ -52,6 +56,7 @@ func (c *Client) CreateSubAccount(ctx context.Context, req models.CreateSubAccou
 	return result, nil
 }
 
+// GetSubAccountAPIKey invokes the corresponding OKX API operation.
 func (c *Client) GetSubAccountAPIKey(ctx context.Context, subAcct string, apiKey *string) ([]models.SubAccountAPIKey, error) {
 	params := map[string]string{
 		"subAcct": subAcct,
@@ -67,6 +72,7 @@ func (c *Client) GetSubAccountAPIKey(ctx context.Context, subAcct string, apiKey
 	return result, nil
 }
 
+// CreateSubAccountAPIKey invokes the corresponding OKX API operation.
 func (c *Client) CreateSubAccountAPIKey(ctx context.Context, req models.CreateSubAccountAPIKeyRequest) ([]models.CreateSubAccountAPIKeyResponse, error) {
 	var result []models.CreateSubAccountAPIKeyResponse
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/users/subaccount/apikey", nil, req, &result); err != nil {
@@ -75,6 +81,7 @@ func (c *Client) CreateSubAccountAPIKey(ctx context.Context, req models.CreateSu
 	return result, nil
 }
 
+// ModifySubAccountAPIKey invokes the corresponding OKX API operation.
 func (c *Client) ModifySubAccountAPIKey(ctx context.Context, req models.ModifySubAccountAPIKeyRequest) ([]models.SubAccountAPIKey, error) {
 	var result []models.SubAccountAPIKey
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/users/subaccount/modify-apikey", nil, req, &result); err != nil {
@@ -83,6 +90,7 @@ func (c *Client) ModifySubAccountAPIKey(ctx context.Context, req models.ModifySu
 	return result, nil
 }
 
+// DeleteSubAccountAPIKey invokes the corresponding OKX API operation.
 func (c *Client) DeleteSubAccountAPIKey(ctx context.Context, req models.DeleteSubAccountAPIKeyRequest) error {
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/users/subaccount/delete-apikey", nil, req, nil); err != nil {
 		return err
@@ -90,6 +98,7 @@ func (c *Client) DeleteSubAccountAPIKey(ctx context.Context, req models.DeleteSu
 	return nil
 }
 
+// SetSubAccountTransferOut invokes the corresponding OKX API operation.
 func (c *Client) SetSubAccountTransferOut(ctx context.Context, req models.SetSubAccountTransferOutRequest) error {
 	if err := c.doFunc(ctx, http.MethodPost, "/api/v5/users/subaccount/set-transfer-out", nil, req, nil); err != nil {
 		return err
@@ -97,6 +106,7 @@ func (c *Client) SetSubAccountTransferOut(ctx context.Context, req models.SetSub
 	return nil
 }
 
+// GetEntrustSubAccountList invokes the corresponding OKX API operation.
 func (c *Client) GetEntrustSubAccountList(ctx context.Context, subAcct *string) ([]models.EntrustSubAccountList, error) {
 	params := make(map[string]string)
 	if subAcct != nil {
