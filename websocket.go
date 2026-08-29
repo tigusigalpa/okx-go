@@ -296,7 +296,9 @@ func (ws *WSClient) send(v interface{}) error {
 	ws.writeMu.Lock()
 	defer ws.writeMu.Unlock()
 
-	conn.SetWriteDeadline(time.Now().Add(writeTimeout))
+	if err := conn.SetWriteDeadline(time.Now().Add(writeTimeout)); err != nil {
+		return fmt.Errorf("failed to set write deadline: %w", err)
+	}
 	if err := conn.WriteMessage(websocket.TextMessage, data); err != nil {
 		return fmt.Errorf("failed to write message: %w", err)
 	}
@@ -323,7 +325,16 @@ func (ws *WSClient) readPump() {
 		default:
 		}
 
-		conn.SetReadDeadline(time.Now().Add(readTimeout))
+		if err := conn.SetReadDeadline(time.Now().Add(readTimeout)); err != nil {
+			ws.logger.Error("WebSocket read deadline error", "error", err)
+			ws.mu.RLock()
+			reconnect := ws.reconnect
+			ws.mu.RUnlock()
+			if reconnect {
+				ws.handleReconnect()
+			}
+			return
+		}
 		_, message, err := conn.ReadMessage()
 		if err != nil {
 			ws.logger.Error("WebSocket read error", "error", err)
@@ -363,7 +374,11 @@ func (ws *WSClient) pingPump() {
 			}
 
 			ws.writeMu.Lock()
-			conn.SetWriteDeadline(time.Now().Add(writeTimeout))
+			if err := conn.SetWriteDeadline(time.Now().Add(writeTimeout)); err != nil {
+				ws.writeMu.Unlock()
+				ws.logger.Error("WebSocket ping deadline error", "error", err)
+				return
+			}
 			if err := conn.WriteMessage(websocket.TextMessage, []byte("ping")); err != nil {
 				ws.writeMu.Unlock()
 				ws.logger.Error("WebSocket ping error", "error", err)
