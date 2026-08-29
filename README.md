@@ -2,8 +2,13 @@
 
 ![OKX Golang client](https://i.postimg.cc/rpvZ9816/okx-golang-github-hero.jpg)
 
+[![CI](https://github.com/tigusigalpa/okx-go/actions/workflows/ci.yml/badge.svg)](https://github.com/tigusigalpa/okx-go/actions/workflows/ci.yml)
+[![Tests](https://img.shields.io/badge/tests-go%20test%20--race-brightgreen)](https://github.com/tigusigalpa/okx-go/actions/workflows/ci.yml)
+[![Go vet](https://img.shields.io/badge/code%20analysis-go%20vet-brightgreen)](https://github.com/tigusigalpa/okx-go/actions/workflows/ci.yml)
 [![Go Version](https://img.shields.io/badge/go-1.21+-blue.svg)](https://golang.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![CodeQL](https://github.com/tigusigalpa/okx-go/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/tigusigalpa/okx-go/actions/workflows/codeql.yml)
+[![codecov](https://codecov.io/gh/tigusigalpa/okx-go/graph/badge.svg)](https://codecov.io/gh/tigusigalpa/okx-go)
 [![Go Report Card](https://goreportcard.com/badge/github.com/tigusigalpa/okx-go)](https://goreportcard.com/report/github.com/tigusigalpa/okx-go)
 [![codecov](https://codecov.io/gh/tigusigalpa/okx-go/graph/badge.svg)](https://codecov.io/gh/tigusigalpa/okx-go)
 

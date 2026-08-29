@@ -1,2 +1,18 @@
+coverage:
+  status:
+    project:
+      default:
+        target: 80%
+        threshold: 0%
+        flags:
+          - unit
+    patch:
+      default:
+        target: 80%
+        threshold: 0%
+        flags:
+          - unit
+
+comment: false
 ignore:
   - "examples/**"
