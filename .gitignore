@@ -10,18 +10,18 @@
 
 # Output of the go coverage tool
 *.out
-coverage.txt
-coverage.html
+
+# Local Go build and test caches
+.gocache/
+.gotmp/
+coverage/
+test-results/
 
 # Dependency directories
 vendor/
 
 # Go workspace file
 go.work
-go.work.sum
-
-# Local Go build cache
-.gocache/
 
 # IDE
 .idea/
@@ -34,7 +34,11 @@ go.work.sum
 .DS_Store
 Thumbs.db
 
-# Environment files
+# Environment variables
 .env
 .env.local
-.env.test
+
+# Build output
+bin/
+dist/
+build/

@@ -203,11 +203,30 @@ Notes:
 | Option                  | Description           | Default                      |
 |-------------------------|-----------------------|------------------------------|
 | `WithHTTPClient(c)`     | Custom `*http.Client` | `&http.Client{Timeout: 30s}` |
-| `WithBaseURL(url)`      | Override base URL     | `https://www.okx.com`        |
+| `WithBaseURL(url)`      | Override base URL     | `https://openapi.okx.com`    |
 | `WithDemoTrading()`     | Demo mode             | off                          |
 | `WithTimeout(d)`        | Request timeout       | `30s`                        |
 | `WithRateLimiter(true)` | Rate limiter          | off                          |
 | `WithLogger(l)`         | Custom `Logger`       | no-op                        |
+
+### Regional REST endpoints
+
+`DefaultBaseURL` uses `https://openapi.okx.com`, the recommended endpoint for
+OKX Global accounts. Regional accounts must use the matching REST domain:
+
+```go
+// OKX United States
+client := okx.NewRestClient(key, secret, passphrase, okx.WithBaseURL(okx.USBaseURL))
+
+// OKX European Economic Area
+client := okx.NewRestClient(key, secret, passphrase, okx.WithBaseURL(okx.EEABaseURL))
+
+// OKX Türkiye
+client := okx.NewRestClient(key, secret, passphrase, okx.WithBaseURL(okx.TRBaseURL))
+```
+
+WebSocket endpoints are the same for Global and regional accounts; continue to
+use `WSPublicURL`, `WSPrivateURL`, or `WSBusinessURL` as appropriate.
 
 ## REST endpoints
 

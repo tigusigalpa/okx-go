@@ -56,6 +56,25 @@ func TestNewClientWithOptions(t *testing.T) {
 	assert.Equal(t, 60*time.Second, client.httpClient.Timeout)
 }
 
+func TestRegionalBaseURLs(t *testing.T) {
+	tests := []struct {
+		name string
+		url  string
+	}{
+		{name: "global", url: DefaultBaseURL},
+		{name: "United States", url: USBaseURL},
+		{name: "EEA", url: EEABaseURL},
+		{name: "Türkiye", url: TRBaseURL},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			client := NewClient("", "", "", WithBaseURL(tt.url))
+			require.Equal(t, tt.url, client.baseURL)
+		})
+	}
+}
+
 func TestNewClientAppliesAllOptions(t *testing.T) {
 	httpClient := &http.Client{}
 	logger := &noopLogger{}

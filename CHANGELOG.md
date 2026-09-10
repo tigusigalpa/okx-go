@@ -6,6 +6,7 @@ All notable changes to this project are documented in this file.
 
 ### Changed
 - **Breaking:** renamed `OKXError` to `Error` to avoid a stuttering exported name (`okx.OKXError`). Update type assertions and `errors.As` targets to use `*okx.Error`.
+- The default REST API endpoint for OKX Global accounts is now `https://openapi.okx.com`, as recommended by OKX. Added `USBaseURL`, `EEABaseURL`, and `TRBaseURL` for regional accounts; WebSocket endpoints are unchanged.
 
 ## [v1.0.3] - 2026-08-08
 

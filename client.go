@@ -15,10 +15,16 @@ import (
 )
 
 const (
-	// DefaultBaseURL is the production base URL for OKX API
-	DefaultBaseURL = "https://www.okx.com"
-	// DemoBaseURL is the demo trading base URL
-	DemoBaseURL = "https://www.okx.com"
+	// DefaultBaseURL is the recommended REST API base URL for OKX Global accounts.
+	DefaultBaseURL = "https://openapi.okx.com"
+	// USBaseURL is the REST API base URL for OKX United States accounts.
+	USBaseURL = "https://us.okx.com"
+	// EEABaseURL is the REST API base URL for OKX European Economic Area accounts.
+	EEABaseURL = "https://eea.okx.com"
+	// TRBaseURL is the REST API base URL for OKX Türkiye accounts.
+	TRBaseURL = "https://tr.okx.com"
+	// DemoBaseURL is the REST API base URL for demo trading on OKX Global.
+	DemoBaseURL = DefaultBaseURL
 )
 
 // Client is the main OKX REST API client.
