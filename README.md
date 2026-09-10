@@ -9,7 +9,6 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![CodeQL](https://github.com/tigusigalpa/okx-go/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/tigusigalpa/okx-go/actions/workflows/codeql.yml)
 [![codecov](https://codecov.io/gh/tigusigalpa/okx-go/graph/badge.svg)](https://codecov.io/gh/tigusigalpa/okx-go)
-[![Go Report Card](https://goreportcard.com/badge/github.com/tigusigalpa/okx-go)](https://goreportcard.com/report/github.com/tigusigalpa/okx-go)
 
 Go client for the [OKX v5 API](https://www.okx.com/docs-v5/en/). Covers 335 REST endpoints and 53 WebSocket channels.
 
