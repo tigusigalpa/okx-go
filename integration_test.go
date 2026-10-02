@@ -71,14 +71,6 @@ func TestIntegration_GetSystemTime(t *testing.T) {
 }
 
 func TestIntegration_WebSocket_PublicChannel(t *testing.T) {
-	apiKey := os.Getenv("OKX_API_KEY")
-	secretKey := os.Getenv("OKX_SECRET_KEY")
-	passphrase := os.Getenv("OKX_PASSPHRASE")
-
-	if apiKey == "" || secretKey == "" || passphrase == "" {
-		t.Skip("Skipping integration test: OKX credentials not set")
-	}
-
 	ws := NewWSClient("", "", "", WSPublicURL)
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
@@ -94,8 +86,11 @@ func TestIntegration_WebSocket_PublicChannel(t *testing.T) {
 
 	select {
 	case msg := <-ch:
-		assert.NotNil(t, msg)
-		t.Logf("Received message: %s", string(msg))
+		message, err := models.DecodeWSMessage[models.Ticker](msg)
+		require.NoError(t, err)
+		require.Equal(t, "tickers", message.Arg.Channel)
+		require.NotEmpty(t, message.Data)
+		require.Equal(t, "BTC-USDT", message.Data[0].InstID)
 	case <-time.After(10 * time.Second):
 		t.Fatal("Timeout waiting for WebSocket message")
 	}

@@ -42,7 +42,9 @@ Runnable examples:
 
 ```bash
 go run ./examples/rest
-go run ./examples/websocket
+go run ./examples/websocket/public
+go run ./examples/websocket/business
+go run ./examples/websocket/private
 ```
 
 ### REST
@@ -97,26 +99,35 @@ func main() {
 }
 ```
 
-### WebSocket (public)
+### WebSocket (public, typed)
 
 ```go
-ws := okx.NewWSClient("", "", "", okx.WSPublicURL)
+ctx, cancel := context.WithCancel(context.Background())
+defer cancel()
 
-ctx := context.Background()
+ws := okx.NewWSClient("", "", "", okx.WSPublicURL, okx.WithWSSubscriptionBuffer(256))
+defer ws.Close()
+
 if err := ws.Connect(ctx); err != nil {
     log.Fatal(err)
 }
-defer ws.Close()
 
-ch, err := ws.Subscribe(ctx, "tickers", map[string]interface{}{
+stream, err := ws.Subscribe(ctx, "tickers", map[string]interface{}{
     "instId": "BTC-USDT",
 })
 if err != nil {
     log.Fatal(err)
 }
 
-for msg := range ch {
-    fmt.Printf("%s\n", msg)
+for raw := range stream {
+    message, err := models.DecodeWSMessage[models.Ticker](raw)
+    if err != nil {
+        log.Printf("decode ticker: %v", err)
+        continue
+    }
+    for _, ticker := range message.Data {
+        fmt.Printf("%s last=%s\n", ticker.InstID, ticker.Last)
+    }
 }
 ```
 
@@ -151,6 +162,99 @@ for msg := range ch {
     fmt.Printf("%s\n", msg)
 }
 ```
+
+`Login` only returns successfully after OKX acknowledges the request. Use
+`ws.IsAuthenticated()` when an application needs to inspect the current connection state.
+
+### WebSocket regions, demo, and protocol support
+
+OKX will discontinue the legacy WebSocket port 8443 on **2026-10-31**. This SDK uses
+the default secure WebSocket port (443) for every endpoint below.
+
+| Region | REST configuration | Production JSON services | Demo JSON services |
+|--------|--------------------|--------------------------|--------------------|
+| Global | `DefaultBaseURL` | `wss://ws.okx.com/ws/v5/{public,private,business}` | `wss://wspap.okx.com/ws/v5/{public,private,business}` |
+| EEA | `EEABaseURL` | `wss://wseea.okx.com/ws/v5/{public,private,business}` | `wss://wseeapap.okx.com/ws/v5/{public,private,business}` |
+| United States | `USBaseURL` | `wss://wsus.okx.com/ws/v5/{public,private,business}` | `wss://wsuspap.okx.com/ws/v5/{public,private,business}` |
+| Türkiye | `TRBaseURL` | Global endpoints | Global demo endpoints |
+
+Use `WSPublicURL`, `WSPrivateURL`, and `WSBusinessURL` for Global, or select an endpoint
+without hard-coding hosts:
+
+```go
+endpoint, err := okx.WebSocketURL(okx.WSRegionEEA, okx.WSServiceBusiness, true)
+if err != nil {
+    log.Fatal(err)
+}
+ws := okx.NewWSClient(apiKey, secret, passphrase, endpoint)
+```
+
+The exported EEA and US constants follow the same pattern: `WSEEAPublicURL`,
+`WSEEAPrivateURL`, `WSEEABusinessURL`, `WSUSPublicURL`, `WSUSPrivateURL`, and
+`WSUSBusinessURL`; their `WSDemo...` counterparts select demo hosts. `WithWSDemo()` also
+maps a supported production endpoint to its matching demo endpoint. Türkiye currently uses
+the Global WebSocket deployment; no distinct Türkiye WebSocket hostname is invented by this SDK.
+
+`WSPublicSBEURL` and `WSDemoPublicSBEURL` remain available for source compatibility, but this
+client implements JSON WebSocket messages only and does not decode SBE binary market data.
+
+### WebSocket lifecycle, errors, and backpressure
+
+`Connect` starts one activity-aware heartbeat. It sends a text `ping` only while the connection
+is idle and reconnects when no activity arrives before the pong timeout. A disconnect triggers
+one reconnect loop with bounded exponential backoff; successful reconnections restore a confirmed
+login and active subscriptions. `Close` is idempotent and immediately interrupts a pending backoff.
+
+`Subscribe` preserves the original raw-message API. A successful call means the request was
+written; subscribe acknowledgements, server errors, reconnects, and buffer overflows are exposed
+through `Events()` (the channel closes with `Close`):
+
+```go
+for event := range ws.Events() {
+    if event.Err != nil {
+        log.Printf("WebSocket %s: %v", event.Type, event.Err)
+    }
+}
+```
+
+Each subscription has a bounded message channel (100 messages by default). Make overload explicit
+with `WithWSSubscriptionBuffer`, and receive every local overflow synchronously with
+`WithWSDropHandler`:
+
+```go
+ws := okx.NewWSClient("", "", "", okx.WSPublicURL,
+    okx.WithWSSubscriptionBuffer(512),
+    okx.WithWSDropHandler(func(drop okx.WSDrop) {
+        log.Printf("dropped %d messages on %s", drop.Count, drop.Channel)
+    }),
+)
+```
+
+### WebSocket candles and order books
+
+Decode push payloads with `models.DecodeWSMessage[T]`. It keeps financial values as strings and
+supports `Ticker`, `Trade`, `Candle`, `OpenInterest`, `FundingRate`, `OrderBook`,
+`LiquidationOrder`, and `MarkPrice`. Market candles use the 9-field OKX array; index and mark-price
+candles use the 6-field form. `Candle.IsConfirmed()` distinguishes a closed candle from an update.
+
+Candle channels are served through the Business endpoint:
+
+```go
+ws := okx.NewWSClient("", "", "", okx.WSBusinessURL)
+// Connect, then subscribe to "candle1m" with {"instId": "BTC-USDT"}.
+```
+
+For incremental `books` data, use `seqId` and `prevSeqId` rather than `checksum`. OKX has
+deprecated checksum validation for incremental books streams; a zero checksum is expected. The
+helper accepts snapshots (`prevSeqId == -1`) and maintenance resets while detecting a real gap:
+
+```go
+if err := okx.ValidateOrderBookSequence(previous, next); err != nil {
+    // resubscribe or request a fresh snapshot
+}
+```
+
+`books5` is a snapshot-style channel and should not be treated as an incremental checksum feed.
 
 ## Attached TP/SL (attachAlgoOrds)
 
@@ -224,8 +328,8 @@ client := okx.NewRestClient(key, secret, passphrase, okx.WithBaseURL(okx.EEABase
 client := okx.NewRestClient(key, secret, passphrase, okx.WithBaseURL(okx.TRBaseURL))
 ```
 
-WebSocket endpoints are the same for Global and regional accounts; continue to
-use `WSPublicURL`, `WSPrivateURL`, or `WSBusinessURL` as appropriate.
+WebSocket hosts are region-specific. See [WebSocket regions, demo, and protocol support](#websocket-regions-demo-and-protocol-support)
+for the exact Global, EEA, US, and Türkiye behavior.
 
 ## REST endpoints
 
@@ -272,11 +376,13 @@ REST — pass `okx.WithDemoTrading()`:
 client := okx.NewRestClient(apiKey, secret, passphrase, okx.WithDemoTrading())
 ```
 
-WebSocket — use demo URLs:
+WebSocket — use demo URLs or `WithWSDemo()`:
 
 - `okx.WSDemoPublicURL`
 - `okx.WSDemoPrivateURL`
 - `okx.WSDemoBusinessURL`
+- `okx.WSDemoEEAPublicURL`, `okx.WSDemoEEAPrivateURL`, `okx.WSDemoEEABusinessURL`
+- `okx.WSDemoUSPublicURL`, `okx.WSDemoUSPrivateURL`, `okx.WSDemoUSBusinessURL`
 
 ## Errors
 
@@ -321,6 +427,9 @@ go test ./...
 
 # integration (demo env)
 OKX_API_KEY=... OKX_SECRET_KEY=... OKX_PASSPHRASE=... go test -tags=integration ./...
+
+# public WebSocket integration (no API credentials required)
+go test -tags=integration -run TestIntegration_WebSocket_PublicChannel ./...
 ```
 
 ## Contributing

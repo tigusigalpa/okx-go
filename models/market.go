@@ -37,14 +37,17 @@ type IndexTicker struct {
 	TS      string `json:"ts"`
 }
 
-// OrderBook represents an OKX API request or response value.
+// OrderBook represents an OKX order-book snapshot or incremental update.
 type OrderBook struct {
-	Asks [][]string `json:"asks"`
-	Bids [][]string `json:"bids"`
-	TS   string     `json:"ts"`
+	Asks      [][]string `json:"asks"`
+	Bids      [][]string `json:"bids"`
+	TS        string     `json:"ts"`
+	Checksum  int64      `json:"checksum,omitempty"`
+	SeqID     int64      `json:"seqId,omitempty"`
+	PrevSeqID int64      `json:"prevSeqId,omitempty"`
 }
 
-// Candle represents an OKX API request or response value.
+// Candle represents an OKX candle row returned as a positional JSON array.
 type Candle struct {
 	TS          string `json:"ts"`
 	O           string `json:"o"`
@@ -57,15 +60,16 @@ type Candle struct {
 	Confirm     string `json:"confirm"`
 }
 
-// UnmarshalJSON invokes the corresponding OKX API operation.
+// UnmarshalJSON decodes market candles and index or mark-price candles.
 func (c *Candle) UnmarshalJSON(data []byte) error {
 	var arr []string
 	if err := json.Unmarshal(data, &arr); err != nil {
 		return err
 	}
-	if len(arr) < 5 {
+	if len(arr) != 6 && len(arr) < 9 {
 		return fmt.Errorf("okx: unexpected candle length %d", len(arr))
 	}
+	*c = Candle{}
 	c.TS, c.O, c.H, c.L, c.C = arr[0], arr[1], arr[2], arr[3], arr[4]
 	switch len(arr) {
 	case 6:
@@ -86,7 +90,15 @@ func (c *Candle) UnmarshalJSON(data []byte) error {
 			c.Confirm = arr[8]
 		}
 	}
+	if c.Confirm != "0" && c.Confirm != "1" {
+		return fmt.Errorf("okx: invalid candle confirm value %q", c.Confirm)
+	}
 	return nil
+}
+
+// IsConfirmed reports whether OKX has closed the candle interval.
+func (c Candle) IsConfirmed() bool {
+	return c.Confirm == "1"
 }
 
 // Trade represents an OKX API request or response value.
@@ -97,6 +109,9 @@ type Trade struct {
 	Sz      string `json:"sz"`
 	Side    string `json:"side"`
 	TS      string `json:"ts"`
+	Count   string `json:"count,omitempty"`
+	Source  string `json:"source,omitempty"`
+	SeqID   int64  `json:"seqId,omitempty"`
 }
 
 // Platform24Volume represents an OKX API request or response value.

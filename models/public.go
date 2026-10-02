@@ -47,7 +47,7 @@ type DeliveryExerciseDetail struct {
 	Type  string `json:"type"`
 }
 
-// OpenInterest represents an OKX API request or response value.
+// OpenInterest represents an OKX open-interest value.
 type OpenInterest struct {
 	InstID   string `json:"instId"`
 	InstType string `json:"instType"`
@@ -56,14 +56,22 @@ type OpenInterest struct {
 	TS       string `json:"ts"`
 }
 
-// FundingRate represents an OKX API request or response value.
+// FundingRate represents an OKX funding-rate value.
 type FundingRate struct {
 	FundingRate     string `json:"fundingRate"`
 	FundingTime     string `json:"fundingTime"`
 	InstID          string `json:"instId"`
 	InstType        string `json:"instType"`
-	NextFundingRate string `json:"nextFundingRate"`
-	NextFundingTime string `json:"nextFundingTime"`
+	NextFundingRate string `json:"nextFundingRate,omitempty"`
+	NextFundingTime string `json:"nextFundingTime,omitempty"`
+	FormulaType     string `json:"formulaType,omitempty"`
+	InterestRate    string `json:"interestRate,omitempty"`
+	ImpactValue     string `json:"impactValue,omitempty"`
+	MinFundingRate  string `json:"minFundingRate,omitempty"`
+	MaxFundingRate  string `json:"maxFundingRate,omitempty"`
+	SettState       string `json:"settState,omitempty"`
+	SettFundingRate string `json:"settFundingRate,omitempty"`
+	TS              string `json:"ts,omitempty"`
 }
 
 // FundingRateHistory represents an OKX API request or response value.
@@ -133,8 +141,11 @@ type SystemTime struct {
 
 // LiquidationOrder represents an OKX API request or response value.
 type LiquidationOrder struct {
-	Details []LiquidationDetail `json:"details"`
-	TS      string              `json:"ts"`
+	InstType string              `json:"instType,omitempty"`
+	InstID   string              `json:"instId,omitempty"`
+	Uly      string              `json:"uly,omitempty"`
+	Details  []LiquidationDetail `json:"details"`
+	TS       string              `json:"ts,omitempty"`
 }
 
 // LiquidationDetail represents an OKX API request or response value.

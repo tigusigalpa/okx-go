@@ -2,6 +2,24 @@
 
 All notable changes to this project are documented in this file.
 
+## [Unreleased]
+
+### Changed
+- **Breaking external infrastructure change:** WebSocket JSON endpoints now use the default secure port (443). This is required before OKX retires port 8443 on 2026-10-31.
+- Regional WebSocket selection is explicit: Global, EEA, and US production/demo JSON endpoints are available through constants and `WebSocketURL`. Türkiye intentionally uses the Global WebSocket deployment.
+- `WSClient.Login` now succeeds only after an OKX login acknowledgement rather than after the request is written.
+- Incremental `books` consumers should use `seqId` and `prevSeqId`; checksum verification is no longer relied upon because OKX has deprecated it for these streams.
+
+### Added
+- Typed `models.WSMessage[T]` envelopes and `models.DecodeWSMessage` for ticker, trade, candle, order-book, open-interest, funding-rate, liquidation, and mark-price pushes.
+- Typed WebSocket lifecycle and protocol events via `WSClient.Events`, including authentication, subscription rejections, reconnects, notices, and message drops.
+- Configurable per-subscription buffering through `WithWSSubscriptionBuffer`, observable overload handling through `WithWSDropHandler`, and `ValidateOrderBookSequence` for incremental book continuity.
+- Separate runnable public ticker, business candle, and private authenticated WebSocket examples.
+
+### Fixed
+- Reconnection is coordinated by a single loop, restores only server-confirmed authentication, and can be interrupted immediately by `Close`.
+- The heartbeat is activity-aware, uses OKX text `ping`/`pong`, and reconnects after a pong timeout.
+
 ## [v1.1.0] - Unreleased
 
 ### Changed
