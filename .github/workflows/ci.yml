@@ -31,7 +31,7 @@ jobs:
         run: go test -race -covermode=atomic -coverprofile=coverage.out ./...
       - name: Upload coverage to Codecov
         if: matrix.go == '1.21.x'
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           files: ./coverage.out
           fail_ci_if_error: false
