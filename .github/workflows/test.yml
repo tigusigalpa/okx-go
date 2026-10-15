@@ -21,7 +21,7 @@ jobs:
       - run: go build ./...
       - run: go test -v -race -coverprofile=coverage.out -covermode=atomic ./...
       - if: matrix.go-version == '1.21'
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           files: ./coverage.out
           flags: unittests
